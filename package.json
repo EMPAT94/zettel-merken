@@ -1,0 +1,24 @@
+{
+  "name": "zettel-merken",
+  "version": "0.0.1",
+  "description": "Supercharge your learning!",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "keywords": [
+    "note-taking",
+    "spaced",
+    "repeatition",
+    "learning"
+  ],
+  "author": "Pritesh Tupe <priteshtupe@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "^6.7.2"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.0"
+  }
+}

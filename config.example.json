@@ -1,0 +1,19 @@
+{
+  "host": {
+    "email": "host@gmail.com",
+    "password": "hostemailpasswort"
+  },
+  "receiver-emails": ["receiver1@mail.com", "receiver2@mail.com"],
+  "note-folders": [
+    {
+      "path": "/full/path/to/dir",
+      "difficulty": 0,
+      "priority": 0,
+      "count": 0
+    }
+  ],
+  "max-notes-per-mail": 10,
+  "max-notes-per-day": 100,
+  "convert-md-to-html": false,
+  "generate-analytics": false
+}
