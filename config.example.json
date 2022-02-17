@@ -3,17 +3,17 @@
     "email": "host@gmail.com",
     "password": "hostemailpasswort"
   },
-  "receiver-emails": ["receiver1@mail.com", "receiver2@mail.com"],
-  "note-folders": [
+  "receiver_emails": ["receiver1@mail.com", "receiver2@mail.com"],
+  "note_folders": [
     {
-      "path": "/full/path/to/dir",
+      "path": "/full/path/to/notes/",
       "difficulty": 0,
       "priority": 0,
-      "count": 0
+      "max_notes": 0
     }
   ],
-  "max-notes-per-mail": 10,
-  "max-notes-per-day": 100,
-  "convert-md-to-html": false,
-  "generate-analytics": false
+  "max_notes_per_mail": 10,
+  "max_notes_per_day": 100,
+  "convert_md_to_html": false,
+  "generate_analytics": false
 }
