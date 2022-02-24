@@ -1,46 +1,98 @@
-import { readFileSync, existsSync, constants } from "fs";
-import { access } from "fs/promises";
+import {
+  readFileSync,
+  existsSync,
+  accessSync,
+  readdirSync,
+  constants,
+} from "fs";
+
+import { extname, resolve } from "path";
 
 const CONFIG_FILE = "./config.json";
-const CACHE_FILE = "./cache.json";
+const CACHE_FILE = "./.cache.json";
+const UTF = { encoding: "utf-8" };
 
-let config;
-try {
-  config = JSON.parse(readFileSync(CONFIG_FILE, { encoding: "utf-8" }));
-} catch (e) {
-  handleError(e);
+function main() {
+  const config = validateConfig(readConfig());
+  const cache = readCache();
+  const notes_list = createNoteList(config, cache);
+  const mail_list = createMailList(notes_list);
+  sendMails(mail_list);
 }
 
-// TODO: Basic validation of config
-
-// 2. Fetch and parse cache.json
-
-let cache;
-try {
-  if (existsSync(CACHE_FILE)) {
-    cache = JSON.parse(readFileSync(CACHE_FILE, { encoding: "utf-8" }));
-  }
-} catch (e) {
-  handleError(e);
-}
-
-// 3. Check if "note-folders" exist and readable
-
-config.note_folders.forEach(async ({ path }) => {
+function readConfig() {
   try {
-    await access(path, constants.R_OK);
-    console.log("Folder access works, requires full path!");
-  } catch (e) {
-    handleError(e);
+    return JSON.parse(readFileSync(CONFIG_FILE, UTF));
+  } catch (error) {
+    handleError({ error });
   }
-});
-
-// 4. Select notes to be sent based on config
-// 5. Additional transformation as necessary
-// 6. Send mail to each receiver email
-// 7. Update cache.json
-
-function handleError(e) {
-  console.error(e.name + ": " + e.message);
-  process.exit();
 }
+
+function readCache() {
+  try {
+    if (existsSync(CACHE_FILE)) {
+      return JSON.parse(readFileSync(CACHE_FILE, UTF));
+    }
+  } catch (e) {
+    handleError({ error });
+  }
+}
+
+function validateConfig(config) {
+  return config;
+}
+
+function createNoteList(config, cache) {
+  let note_list = [];
+
+  config.note_folders.forEach(
+    ({
+      path,
+      count = 10,
+      priority = 0,
+      include_ext = config.include_ext || [],
+    }) => {
+      try {
+        accessSync(path, constants.R_OK);
+
+        const note_files = readdirSync(path, UTF).filter((f) =>
+          include_ext.includes(extname(f))
+        );
+
+        const notes_obj = {
+          path,
+          priority,
+          raw_strings: [],
+        };
+
+        while (count--)
+          // TODO Check against cache
+          notes_obj.raw_strings.push(
+            readFileSync(resolve(path, note_files.pop()), UTF)
+          );
+
+        // 5. Additional transformation as necessary
+        note_list.push(notes_obj);
+      } catch (e) {
+        handleError({ error, shouldExit: false });
+      }
+    }
+  );
+
+  return note_list;
+}
+
+function createMailList(note_list) {}
+
+function sendMails(main_list) {}
+
+function handleError({ error, shouldExit = true }) {
+  if (shouldExit) {
+    console.error(error.name, error.message);
+    process.exit();
+  } else {
+    console.warn(error.name, error.message);
+  }
+}
+
+main();
