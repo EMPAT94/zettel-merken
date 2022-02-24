@@ -35,33 +35,33 @@ That's it! To expand on the above, here is a sample of my current notes director
 ```sh
 
 ~/notes
+├── index.md
+├── books-and-articles.md
 ├── books-and-articles
 │  ├── atomic-habits.md
 │  └── ledger-accounting.md
-├── books-and-articles.md
+├── code-notes.md
 ├── code-notes
+│  ├── python.md
 │  ├── python
 │  │  └── basics.md
-│  ├── python.md
 │  ├── vim.md
-├── code-notes.md
-├── index.md
+├── learning-french.md
 ├── learning-french
 │  ├── basics-1.1.md
 │  ├── basics-1.2.md
 │  ├── basics-1.3.md
-├── learning-french.md
+├── transactions.md
 ├── transactions
 │  ├── 01-2022.md
 │  └── 02-2022.md
-├── transactions.md
-├── zettel-merken
-│  └── research-in-spaced-repeatition.md
-└── zettel-merken.md
+├── zettel-merken.md
+└── zettel-merken
+   └── research-in-spaced-repeatition.md
 
 ```
 
-As you can see above, I have hubs after each topic: zettel-merken, books-and-articles, learning-french, etc. Each hub has a <file>.md and <folder> with the same name. I take all my notes in neovim in markdown format (No special plugins!). I have written a couple of helper functions that make it easy to create hubs and zettels but that is all.
+As you can see above, I have hubs after each topic: zettel-merken, books-and-articles, learning-french, etc. Each hub has a file.md and folder with the same name. I take all my notes in neovim in markdown format (No special plugins!). I have written a couple of helper functions that make it easy to create hubs and zettels but that is all.
 
 Concerning zettels, I try to have them in an easily digestible format. Each zettels has a microscopic focus on the information it is trying to convey. That is: all the content inside a zettel must directly relate to a single matter or flow in one direction. The size of the file is irrelevant, although I try to keep it short and simple.
 
