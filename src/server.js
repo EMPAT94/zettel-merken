@@ -8,16 +8,18 @@ import {
 
 import { extname, resolve } from "path";
 
+import { createTransport } from "nodemailer";
+
 const CONFIG_FILE = "./config.json";
 const CACHE_FILE = "./.cache.json";
 const UTF = { encoding: "utf-8" };
 
-function main() {
+async function main() {
   const config = validateConfig(readConfig());
   const cache = readCache();
   const notes_list = createNoteList(config, cache);
   const mail_list = createMailList(notes_list);
-  sendMails(mail_list);
+  await sendMails(mail_list, config);
 }
 
 function readConfig() {
@@ -71,7 +73,7 @@ function createNoteList(config, cache) {
             readFileSync(resolve(path, note_files.pop()), UTF)
           );
 
-        // 5. Additional transformation as necessary
+        // TODO Additional transformation as necessary
         note_list.push(notes_obj);
       } catch (e) {
         handleError({ error, shouldExit: false });
@@ -82,9 +84,31 @@ function createNoteList(config, cache) {
   return note_list;
 }
 
-function createMailList(note_list) {}
+function createMailList(note_list) {
+  return [{ subject: "", html: "" }];
+}
 
-function sendMails(main_list) {}
+async function sendMails(mail_list, config) {
+  const TRANSPORTER = createTransport({
+    service: config.host.service,
+    auth: {
+      user: config.host.email,
+      pass: config.host.password,
+    },
+  });
+
+  for (const mail of mail_list) {
+    const info = await TRANSPORTER.sendMail({
+      from: config.host.email,
+      to: config.recipients,
+      subject: mail.subject,
+      text: "",
+      html: mail.html,
+    });
+
+    // TODO Handle rejections
+  }
+}
 
 function handleError({ error, shouldExit = true }) {
   if (shouldExit) {
