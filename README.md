@@ -7,7 +7,7 @@
 
 Zettel stands for "note" and Merken stands for "remember" in German. A literal translation would imply "Remember your notes", but that is an overly simplistic definition of what the title stands for.
 
-To be precise, Zettel-merken is a fusion of two impactful ideas in the field of knowledge management and learning enhancement: "Zettelkasten" and "Spaced Repetition".
+To be precise, Zettel Merken is a fusion of two impactful ideas in the field of knowledge management and learning enhancement: "Zettelkasten" and "Spaced Repetition".
 
 ## What is Zettelkasten?
 
@@ -63,22 +63,112 @@ That's it! To expand on the above, here is a sample of my current notes director
 
 As you can see above, I have hubs after each topic: zettel-merken, books-and-articles, learning-french, etc. Each hub has a file.md and folder with the same name. I take all my notes in neovim in markdown format (No special plugins!). I have written a couple of helper functions that make it easy to create hubs and zettels but that is all.
 
+Thus, my `index.md` will look like:
+
+```markdown
+# INDEX
+
+- [Learning French](./learning-french.md)
+
+- [Code Notes](./code-notes.md)
+
+- [Transactions](./transactions.md)
+```
+
+and my `learning-french.md` and `transaction.md` respectively:
+
+```markdown
+# Learning French
+
+- [Basics 1.1](./learning-french/basics-1.1.md)
+
+- [Basics 1.2](./learning-french/basics-1.2.md)
+
+- [Basics 1.3](./learning-french/basics-1.3.md)
+```
+
+```markdown
+# Transactions
+
+- [01-2022](./transactions/01-2022.md)
+
+- [02-2022](./transactions/02-2022.md)
+```
+
 Concerning zettels, I try to have them in an easily digestible format. Each zettels has a microscopic focus on the information it is trying to convey. That is: all the content inside a zettel must directly relate to a single matter or flow in one direction. The size of the file is irrelevant, although I try to keep it short and simple.
+
+For example, `basics-1.1` might look like:
+
+```markdown
+# Basic 1.1
+
+## Level 0
+
+- un = a (sounds: un)
+
+- et = and (sounds: ae)
+
+- un chat = a cat (sounds: un shaa)
+
+- un homme = a man (sounds: un oum)
+
+- un garcon = a boy (sounds: un gars-on)
+
+- un chat et un homme
+  - A cat and a man
+```
+
+and a transaction file `01-2022` would be:
+
+```markdown
+# 01-2022
+
+| Date | From | To  | Amount | Category | Tag | Comment |
+| ---- | ---- | --- | ------ | -------- | --- | ------- |
+```
 
 Also, I _try_ to avoid more than one layer of nesting below the "notes" folder but in some cases like the above "python" notes, it is inevitable. However, there should never be a need to go beyond two layers.
 
 After following the above system consistently for a few months, you'll have a decent-sized collection of notes all linked together and also in a proper structure. That being said, simply "collecting" notes is never going to help you learn in the long term. That is where the Spaced Repetition comes in!
 
-## TODO
-
 ## What is Spaced Repetition?
 
+Excerpt from [Wikipedia article](https://en.wikipedia.org/wiki/Spaced_repetition):
+
+> The basis for spaced repetition research was laid by Hermann Ebbinghaus, who suggested that information loss over time follows a forgetting curve, but that forgetting could be reset with repetition based on active recall.
+
+![Forgetting Curve](https://en.wikipedia.org/wiki/Forgetting_curve#/media/File:ForgettingCurve.svg)
+
+Excerpt from [e-student.org](https://e-student.org/spaced-repetition/):
+
+> Spaced repetition is a memory technique that involves reviewing and recalling information at optimal spacing intervals until the information is learned at a sufficient level.
+
 ### How I use Spaced Repetition
+
+Or rather how I to use Spaced Repetition _using Zettel Merken_. In the code above, you'll notice a `config.example.json` file. It contains path to each of my "hub" in `note_folders` array.
+
+So, for example, if I wished to add my french vocabulary to the learning track as and when I learn new words, I would have the following config:
+
+```json
+  "note_folders": [
+    {
+      "path": "/path/to/notes/learning-french",
+    }
+  ],
+```
+
+Once set, I will automatically get an email for each lesson at specified intervals! Génial!
+
+The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 -> Day 60
+
+## TODO
 
 ## Setting up Zettel-Merken
 
 ## Advanced Configuration
 
 ## Tips and tools
+
+## Roadmap
 
 ## Notes & Bugs
