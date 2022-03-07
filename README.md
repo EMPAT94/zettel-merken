@@ -14,9 +14,9 @@ To be precise, Zettel Merken is a fusion of two impactful ideas in the field of 
 The [Wikipedia article](https://en.wikipedia.org/wiki/Zettelkasten) defines zettelkasten as "The zettelkasten is a system of note-taking and personal knowledge management used in research and study".
 
 <br />
-
+<div align="center">
 <a title="David B. Clear, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Zettelkasten_paper_schematic.png"><img width="512" alt="Zettelkasten paper schematic" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Zettelkasten_paper_schematic.png/512px-Zettelkasten_paper_schematic.png"></a>
-
+</div>
 <br />
 
 [zettelkasten.de](https://zettelkasten.de/introduction/) is a wonderful little site that is all about, well, zettelkasten. Do read the [introduction](https://zettelkasten.de/introduction/). To pick an excerpt from there:
@@ -144,9 +144,9 @@ Excerpt from [Wikipedia article](https://en.wikipedia.org/wiki/Spaced_repetition
 > The basis for spaced repetition research was laid by Hermann Ebbinghaus, who suggested that information loss over time follows a forgetting curve, but that forgetting could be reset with repetition based on active recall.
 
 <br />
-
+<div align="center">
 <a title="The original uploader was Icez at English Wikipedia., Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:ForgettingCurve.svg"><img width="256" alt="ForgettingCurve" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/ForgettingCurve.svg/256px-ForgettingCurve.svg.png"></a>
-
+</div>
 <br />
 
 Excerpt from [e-student.org](https://e-student.org/spaced-repetition/):

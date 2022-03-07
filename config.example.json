@@ -8,16 +8,10 @@
   "note_folders": [
     {
       "path": "/full/path/to/notes/",
-      "difficulty": 0,
       "priority": 0,
       "count": 1,
-      "include_ext": [".md"]
+      "include_ext": [".md"],
+      "exclude_files": ["file1.md"]
     }
-  ],
-  "max_mails_per_day": 10,
-  "mail_per_category": true,
-  "use_hash": false,
-  "convert_md_to_html": false,
-  "generate_analytics": false,
-  "include_ext": [".txt", ".md", ".org"]
+  ]
 }
