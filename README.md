@@ -7,6 +7,9 @@
 <p align="center">
   <a href="https://github.com/EMPAT94/zettel-merken/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/EMPAT94/zettel-merken"></a>
   <a href="https://github.com/EMPAT94/zettel-merken/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/EMPAT94/zettel-merken"></a>
+  <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/empat94/zettel-merken/nodemailer">
+  <img alt="Snyk Vulnerabilities for npm package" src="https://img.shields.io/snyk/vulnerabilities/npm/nodemailer">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/empat94/zettel-merken">
 </p>
 
 <br />
