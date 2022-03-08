@@ -182,49 +182,99 @@ Once set, I will automatically get an email for each lesson at specified interva
 
 The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 -> Day 60
 
-## TODO
-
 ## Setting up Zettel-Merken
 
-### systemd timer
-
-- Create directoy for systemd in .config
+- Clone repository and npm install
 
   ```sh
-  mkdir -p $HOME/.config/systemd/user
+  git clone --depth=1 <link>
+  npm install --prod
   ```
 
-- Copy unit files into above directory
+- Rename config.example.json to config.json and update (see Advanced Config options)
 
   ```sh
-  cp -v ./job/zettel-merken.service $HOME/.config/systemd/user/zettel-merken.service
-  cp -v ./job/zettel-merken.timer $HOME/.config/systemd/user/zettel-merken.timer
+  mv config.example.json config.json
   ```
 
-- Reload systemd daemon
+- Do a dry run to check everything valid
 
   ```sh
-  systemctl --user daemon-reload
+  npm run test
   ```
 
-- Start timer, autostarts on boot
+- Set up a timer to run program using either systemd timers or crontab
+
+### Configuring systemd timer
+
+- Using script:
 
   ```sh
-  systemctl --user enable --now zettel-merken.timer
+  ./configure-systemd.sh
   ```
 
-- Ensure timer is 'active'
+- Manually:
 
-  ```sh
-  systemctl --user status zettel-merken.timer
-  ```
+  - Create directoy for systemd in .config
 
-- Done!
+    ```sh
+    mkdir -p $HOME/.config/systemd/user
+    ```
 
-## Advanced Configuration
+  - Create a file zettel-merken.timer inside ~/.config/systemd/user/ with following content:
 
-## Tips and tools
+    ```ini
+    [Unit]
+    Description=Zettel Merken Email Timer
 
-## Roadmap
+    [Timer]
+    Persistent=true
+    OnCalendar=Daily
 
-## Notes & Bugs
+    [Install]
+    WantedBy=timers.target
+    ```
+
+  - Create a file zettel-merken.service inside ~/.config/systemd/user/ with following content:
+
+    ```ini
+    [Unit]
+    Description=Zettel Merken Email Service
+
+    [Service]
+    Type=simple
+    ExecStart=/path/to/zettel-merken/src/server.js
+
+    [Install]
+    WantedBy=default.target
+    ```
+
+    - Do note the ExecStart command, change the path as necessary
+
+  - Reload systemd daemon
+
+    ```sh
+    systemctl --user daemon-reload
+    ```
+
+  - Start timer, autostarts on boot
+
+    ```sh
+    systemctl --user enable --now zettel-merken.timer
+    ```
+
+  - Ensure timer is 'active'
+
+    ```sh
+    systemctl --user status zettel-merken.timer
+    ```
+
+### Configuring crontab [TODO]
+
+## Advanced Configuration [TODO]
+
+## Tips and tools [TODO]
+
+## Roadmap [TODO]
+
+## Notes & Bugs [TODO]

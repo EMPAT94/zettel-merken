@@ -1,9 +1,0 @@
-  [Unit]
-  Description=Zettel Merken Email Timer
-
-  [Timer]
-  Persistent=true
-  OnCalendar=Daily
-
-  [Install]
-  WantedBy=timers.target
