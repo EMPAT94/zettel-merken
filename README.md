@@ -1,6 +1,14 @@
 <br />
+
 <h1 align="center">ZETTEL MERKEN</h1>
+
 <p align="center">Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</p>
+
+<p align="center">
+  <a href="https://github.com/EMPAT94/zettel-merken/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/EMPAT94/zettel-merken"></a>
+  <a href="https://github.com/EMPAT94/zettel-merken/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/EMPAT94/zettel-merken"></a>
+</p>
+
 <br />
 
 # Introduction
