@@ -3,7 +3,7 @@
 
   [Timer]
   Persistent=true
-  OnCalender=Weekly
+  OnCalendar=Daily
 
   [Install]
   WantedBy=timers.target

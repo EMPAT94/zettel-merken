@@ -193,19 +193,19 @@ The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 ->
 - Reload systemd daemon
 
   ```sh
-  sudo systemctl --user daemon-reload
+  systemctl --user daemon-reload
   ```
 
 - Start timer, autostarts on boot
 
   ```sh
-  sudo systemctl --user enable --now zettel-merken.timer
+  systemctl --user enable --now zettel-merken.timer
   ```
 
 - Ensure timer is 'active'
 
   ```sh
-  sudo systemctl --user status zettel-merken.timer
+  systemctl --user status zettel-merken.timer
   ```
 
 - Done!
