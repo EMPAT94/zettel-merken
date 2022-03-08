@@ -178,23 +178,35 @@ The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 ->
 ### systemd timer
 
 - Create directoy for systemd in .config
-  `mkdir -p $HOME/.config/systemd/user`
+
+  ```sh
+  mkdir -p $HOME/.config/systemd/user
+  ```
 
 - Copy unit files into above directory
 
-  ```
-  cp -v ./zettel-merken.service $HOME/.config/systemd/user/zettel-merken.service
-  cp -v ./zettel-merken.timer $HOME/.config/systemd/user/zettel-merken.timer
+  ```sh
+  cp -v ./job/zettel-merken.service $HOME/.config/systemd/user/zettel-merken.service
+  cp -v ./job/zettel-merken.timer $HOME/.config/systemd/user/zettel-merken.timer
   ```
 
 - Reload systemd daemon
-  `sudo systemctl --user daemon-reload`
+
+  ```sh
+  sudo systemctl --user daemon-reload
+  ```
 
 - Start timer, autostarts on boot
-  `sudo systemctl --user enable --now zettel-merken.timer`
+
+  ```sh
+  sudo systemctl --user enable --now zettel-merken.timer
+  ```
 
 - Ensure timer is 'active'
-  `sudo systemctl --user status zettel-merken.timer`
+
+  ```sh
+  sudo systemctl --user status zettel-merken.timer
+  ```
 
 - Done!
 
