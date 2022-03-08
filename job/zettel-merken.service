@@ -1,0 +1,9 @@
+  [Unit]
+  Description=Zettel Merken Email Service
+
+  [Service]
+  Type=simple
+  ExecStart=/home/pritesh/Projects/zettel-merken/src/server.js
+
+  [Install]
+  WantedBy=default.target
