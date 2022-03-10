@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import {
   readFileSync,
   writeFileSync,
@@ -8,11 +6,20 @@ import {
   readdirSync,
   constants,
 } from "fs";
+
 import { extname, resolve, sep } from "path";
+
 import { createTransport } from "nodemailer";
 
-const CONFIG_FILE = "./config.json";
-const CACHE_FILE = "./.cache.json";
+const { CONFIG_FILE, CACHE_FILE, HOME } = process.env;
+
+export const CONFIG =
+  CONFIG_FILE ||
+  `${HOME}/.config/kettel-merken/config.json` ||
+  `${HOME}/zettel-merken-config.json`;
+
+export const CACHE = CACHE_FILE || `${HOME}/.cache/zettel-merken-cache.json`;
+
 const ENCODING = { encoding: "utf-8" };
 
 // CONFIG DEFAULTS
@@ -21,15 +28,15 @@ const DEFAULT_PRIORITY = 0;
 const DEFAULT_INCLUDE_EXT = [".md", ".txt", ".org", ".norg"];
 const DEFAULT_EXCLUDE_FILES = [];
 
-function readJSONFile(file) {
+export function readJSONFile(path) {
   try {
-    if (existsSync(file)) return JSON.parse(readFileSync(file, ENCODING));
+    if (existsSync(path)) return JSON.parse(readFileSync(path, ENCODING));
   } catch (error) {
     handleError({ error });
   }
 }
 
-function validateConfig(config) {
+export function validateConfig(config) {
   const {
     host: { service, email, password },
     recipients,
@@ -50,7 +57,7 @@ function validateConfig(config) {
   }
 }
 
-function createNoteList(config, cache) {
+export function createNoteList(config, cache) {
   let note_list = [];
 
   config.note_folders.forEach(
@@ -124,7 +131,7 @@ function createNoteList(config, cache) {
   }
 }
 
-async function sendMails(note_list, config, cache) {
+export async function sendMails(note_list, config, cache) {
   const TRANSPORTER = createTransport({
     service: config.host.service,
     auth: {
@@ -156,7 +163,7 @@ async function sendMails(note_list, config, cache) {
   for await (const mail of mail_list) {
     mail.html = mail.html.join("\n\n");
 
-    console.log(
+    process.stdout(
       "SENDING MAIL: ",
       mail.subject,
       mail.notes.map((n) => n.file)
@@ -188,22 +195,11 @@ async function sendMails(note_list, config, cache) {
   }
 }
 
-function handleError({ error, shouldExit = true }) {
-  console.error(error.message || error);
-  if (shouldExit) process.exit();
-}
-
-(function main() {
-  let config = readJSONFile(CONFIG_FILE);
-
-  try {
-    validateConfig(config);
-  } catch (error) {
-    handleError({ error });
+export function handleError({ error, shouldExit = true }) {
+  const msg = error.message || error;
+  if (shouldExit) {
+    throw msg;
+  } else {
+    process.stderr(msg);
   }
-
-  let cache = readJSONFile(CACHE_FILE) || {};
-  let note_list = createNoteList(config, cache);
-
-  sendMails(note_list, config, cache);
-})();
+}
