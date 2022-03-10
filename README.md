@@ -1,17 +1,16 @@
 <br />
 
-<h1 align="center">ZETTEL MERKEN</h1>
+<h1 align="center">ZETTEL MERKEN (under construction)</h1>
 
 <p align="center">Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</p>
 
 <p align="center">
   <a href="https://github.com/EMPAT94/zettel-merken/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/EMPAT94/zettel-merken"></a>
   <a href="https://github.com/EMPAT94/zettel-merken/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/EMPAT94/zettel-merken"></a>
-  <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/empat94/zettel-merken/nodemailer">
-  <img alt="Snyk Vulnerabilities for npm package" src="https://img.shields.io/snyk/vulnerabilities/npm/nodemailer">
+  <!-- <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/empat94/zettel-merken/nodemailer"> -->
+  <!-- <img alt="Snyk Vulnerabilities for npm package" src="https://img.shields.io/snyk/vulnerabilities/npm/nodemailer"> -->
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/empat94/zettel-merken">
-</p>
-
+  <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/EMPAT94/zettel-merken"></p>
 <br />
 
 # Introduction
@@ -242,7 +241,6 @@ The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 ->
     Description=Zettel Merken Email Service
 
     [Service]
-    Type=simple
     ExecStart=/path/to/zettel-merken/src/server.js
 
     [Install]

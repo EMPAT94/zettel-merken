@@ -1,7 +1,7 @@
 {
   "name": "zettel-merken",
   "version": "0.0.1",
-  "description": "Supercharge your learning!",
+  "description": "Supercharge your learning by combining zettelkasten and spaced repetition!",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -13,7 +13,7 @@
     "repeatition",
     "learning"
   ],
-  "author": "Pritesh Tupe <priteshtupe@gmail.com>",
+  "author": "Pritesh Tupe <priteshtupe@gmail.com> (https://www.priteshtupe.com)",
   "license": "MIT",
   "dependencies": {
     "nodemailer": "^6.7.2"
