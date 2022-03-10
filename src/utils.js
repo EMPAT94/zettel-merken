@@ -11,15 +11,6 @@ import { extname, resolve, sep } from "path";
 
 import { createTransport } from "nodemailer";
 
-const { CONFIG_FILE, CACHE_FILE, HOME } = process.env;
-
-export const CONFIG =
-  CONFIG_FILE ||
-  `${HOME}/.config/kettel-merken/config.json` ||
-  `${HOME}/zettel-merken-config.json`;
-
-export const CACHE = CACHE_FILE || `${HOME}/.cache/zettel-merken-cache.json`;
-
 const ENCODING = { encoding: "utf-8" };
 
 // CONFIG DEFAULTS
@@ -163,13 +154,14 @@ export async function sendMails(note_list, config, cache) {
   for await (const mail of mail_list) {
     mail.html = mail.html.join("\n\n");
 
-    process.stdout(
+    console.log(
       "SENDING MAIL: ",
       mail.subject,
       mail.notes.map((n) => n.file)
     );
 
-    const info = await TRANSPORTER.sendMail(mail);
+    // const info = await TRANSPORTER.sendMail(mail);
+    const info = await {};
 
     for (const note of mail.notes) {
       if (!cache[note.file]) {
@@ -189,7 +181,7 @@ export async function sendMails(note_list, config, cache) {
   }
 
   try {
-    writeFileSync(CACHE_FILE, JSON.stringify(cache));
+    writeFileSync(config.cache_file, JSON.stringify(cache));
   } catch (error) {
     handleError({ error });
   }
@@ -197,9 +189,8 @@ export async function sendMails(note_list, config, cache) {
 
 export function handleError({ error, shouldExit = true }) {
   const msg = error.message || error;
+  console.error(msg);
   if (shouldExit) {
-    throw msg;
-  } else {
-    process.stderr(msg);
+    process.exit();
   }
 }

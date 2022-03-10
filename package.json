@@ -1,11 +1,15 @@
 {
   "name": "zettel-merken",
+  "config": {
+    "port": "3000"
+  },
   "version": "0.0.1",
   "description": "Supercharge your learning by combining zettelkasten and spaced repetition!",
-  "main": "index.js",
+  "main": "cli.js",
   "type": "module",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "watch": "ava --watch"
   },
   "keywords": [
     "note-taking",
@@ -20,5 +24,11 @@
   },
   "devDependencies": {
     "ava": "^4.1.0"
+  },
+  "engines": {
+    "node": ">= 16.13.2"
+  },
+  "bin": {
+    "zettel-merken": "./cli.js"
   }
 }

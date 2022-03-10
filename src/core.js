@@ -4,12 +4,10 @@ import {
   handleError,
   createNoteList,
   sendMails,
-  CONFIG,
-  CACHE,
-} from "utils.js";
+} from "./utils.js";
 
-export function main() {
-  let config = readJSONFile(CONFIG);
+export default function main(config_path) {
+  const config = readJSONFile(config_path);
 
   try {
     validateConfig(config);
@@ -17,7 +15,8 @@ export function main() {
     handleError({ error });
   }
 
-  let cache = readJSONFile(CACHE) || {};
+  let cache = readJSONFile(config.cache_file) || {};
+
   let note_list = createNoteList(config, cache);
 
   sendMails(note_list, config, cache);
