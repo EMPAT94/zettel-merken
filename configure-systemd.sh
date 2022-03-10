@@ -26,7 +26,6 @@ echo "\
 Description=Zettel Merken Email Service
 
 [Service]
-Type=simple
 ExecStart=${PWD}/src/server.js
 
 [Install]
