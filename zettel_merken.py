@@ -1,8 +1,9 @@
 import os
 import json
-from datetime import date, timedelta
 import sqlite3 as db
+
 from pathlib import Path
+from datetime import date, timedelta
 
 from config_example import DB_PATH, SCHEDULE_DAYS, NOTE_DIRS
 
@@ -29,8 +30,17 @@ def notes_list(dirs):
             yield Path(note).absolute()
 
 
+class ScheduleNotFound(Exception):
+    """When a note schedule is not found in database"""
+
+
+class ScheduleExhausted(Exception):
+    """When the note has beeen sent on all the scheduled days"""
+
+
 def is_note_scheduled(note: Path):
     """Check if a note is scheduled for this run"""
+
     with db.connect(DB_PATH) as cx:
         data = (
             cx.cursor()
@@ -39,22 +49,23 @@ def is_note_scheduled(note: Path):
         )
 
         if not data:
-            raise db.DataError("Note not found")
+            raise ScheduleNotFound
 
         schedule = json.loads(data[0])
-
-        for ordinal in schedule:
-            scheduled_day = date.fromordinal(int(ordinal))
-            if not schedule[ordinal] and scheduled_day < date.today():
-                return True
-            if scheduled_day > date.today():
+        for scheduled_day, sent_day in schedule.items():
+            scheduled_date = date.fromordinal(int(scheduled_day))
+            if scheduled_date > date.today():
                 return False
+            if not sent_day:
+                return True
+
         else:
-            return False
+            raise ScheduleExhausted
 
 
 def create_note_schedule(note: Path, schedule_days: tuple):
     """Create a schedule for a given note"""
+
     os_stat = os.stat(note)
     stats = json.dumps({"size": os_stat.st_size, "mtime": os_stat.st_mtime})
     schedule = json.dumps(
@@ -67,30 +78,37 @@ def create_note_schedule(note: Path, schedule_days: tuple):
         )
 
 
-def build_mail(notes: list[Path]):
+def build_mail(notes: Path):
     """Create a mail from a list of notes"""
-    pass
 
 
-def send_mail(mail: str):
-    """Send an email containing notes scheduled for this run"""
-    pass
+def send_mail(mail_list):
+    """Send an email containing contents of notes list scheduled for this run"""
 
 
-def update_note_schedule(note: str):
+def update_schedule(mail_list):
     """If a note was mailed, update in database"""
-    pass
 
 
 def main():
     create_schema()
 
+    mail_list = []
+
     for note in notes_list(NOTE_DIRS):
         try:
+            # Add max notes limit here
             if is_note_scheduled(note):
-                pass
-        except db.DataError:
+                mail_list.append(note)
+        except ScheduleNotFound:
             create_note_schedule(note, SCHEDULE_DAYS)
+        except ScheduleExhausted:
+            # Check if end with schedule or send every last scheduled day
+            pass
+
+    send_mail(mail_list)
+
+    update_schedule(mail_list)
 
 
 if __name__ == "__main__":

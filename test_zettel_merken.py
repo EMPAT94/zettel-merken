@@ -32,5 +32,6 @@ def test_create_note_schedule():
 
 
 def test_is_note_scheduled():
+    # TODO Also test for True, ScheduleNotFound and ScheduleExhausted
     note = Path("./sample_folder/note_folder_1/note-1.md").absolute()
     assert zm.is_note_scheduled(note) == False
