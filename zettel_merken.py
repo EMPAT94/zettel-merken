@@ -1,16 +1,13 @@
-import os
-import json
-import sqlite3 as db
+import os, json, smtplib, ssl, sqlite3
 
 from pathlib import Path
 from datetime import date, timedelta
-
-from config_example import DB_PATH, SCHEDULE_DAYS, NOTE_DIRS
+from config import *
 
 
 def create_schema():
     """Create database schema for zettel-merken note schedules"""
-    with db.connect(DB_PATH) as cx:
+    with sqlite3.connect(DB_PATH) as cx:
         cu = cx.cursor()
         cu.execute(
             """CREATE TABLE IF NOT EXISTS note_schedule (
@@ -41,7 +38,7 @@ class ScheduleExhausted(Exception):
 def is_note_scheduled(note: Path):
     """Check if a note is scheduled for this run"""
 
-    with db.connect(DB_PATH) as cx:
+    with sqlite3.connect(DB_PATH) as cx:
         data = (
             cx.cursor()
             .execute(f"SELECT schedule FROM note_schedule WHERE note = '{note}'")
@@ -71,10 +68,10 @@ def create_note_schedule(note: Path, schedule_days: tuple):
     schedule = json.dumps(
         {date.toordinal(date.today() + timedelta(s)): None for s in schedule_days}
     )
-    with db.connect(DB_PATH) as cx:
+    with sqlite3.connect(DB_PATH) as cx:
         cx.cursor().execute(
             "insert into note_schedule (note, stats, schedule) values (?, ?, ?)",
-            [str(note), stats, schedule],
+            (str(note), stats, schedule),
         )
 
 
@@ -84,6 +81,13 @@ def build_mail(notes: Path):
 
 def send_mail(mail_list):
     """Send an email containing contents of notes list scheduled for this run"""
+
+    with smtplib.SMTP_SSL(
+        EMAIL["HOST"], EMAIL["PORT"], context=ssl.create_default_context()
+    ) as server:
+        server.login(EMAIL["USER"], EMAIL["PASS"])
+        for r in RECEIVERS:
+            server.sendmail(EMAIL["USER"], r, mail_list)
 
 
 def update_schedule(mail_list):
@@ -106,7 +110,7 @@ def main():
             # Check if end with schedule or send every last scheduled day
             pass
 
-    send_mail(mail_list)
+    # send_mail(mail_list)
 
     update_schedule(mail_list)
 

@@ -3,9 +3,10 @@
 import json
 import sqlite3 as db
 from pathlib import Path
+from datetime import date, timedelta
 
 import zettel_merken as zm
-from config_example import DB_PATH, NOTE_DIRS, SCHEDULE_DAYS
+from config_example import *
 
 
 def test_create_schema():
@@ -22,16 +23,36 @@ def test_notes_list():
 def test_create_note_schedule():
     note = Path("./sample_folder/note_folder_1/note-1.md").absolute()
     zm.create_note_schedule(note, SCHEDULE_DAYS)
+
+    note2 = Path("./sample_folder/note_folder_1/note-2.md").absolute()
+    zm.create_note_schedule(note2, (0,))
+
     with db.connect(DB_PATH) as cx:
-        note_schedule = (
-            cx.cursor()
-            .execute(f"select schedule from note_schedule where note = '{note}'")
-            .fetchone()
-        )
-        assert len(json.loads(note_schedule[0])) == len(SCHEDULE_DAYS)
+        cu = cx.cursor()
+
+        schedule1 = cu.execute(
+            f"select schedule from note_schedule where note = '{note}'"
+        ).fetchone()
+
+        assert len(json.loads(schedule1[0])) == len(SCHEDULE_DAYS)
+
+        schedule2 = cu.execute(
+            f"select schedule from note_schedule where note = '{note2}'"
+        ).fetchone()
+
+        assert str(date.toordinal(date.today())) in json.loads(schedule2[0])
 
 
 def test_is_note_scheduled():
-    # TODO Also test for True, ScheduleNotFound and ScheduleExhausted
+    # TODO Also test for ScheduleNotFound and ScheduleExhausted
     note = Path("./sample_folder/note_folder_1/note-1.md").absolute()
     assert zm.is_note_scheduled(note) == False
+
+    note2 = Path("./sample_folder/note_folder_1/note-2.md").absolute()
+    assert zm.is_note_scheduled(note2) == True
+
+
+def test_cleanup():
+    with db.connect(DB_PATH) as cx:
+        cx.cursor().execute("delete from note_schedule")
+        pass
