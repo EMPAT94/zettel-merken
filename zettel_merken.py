@@ -1,18 +1,16 @@
-#!/usr/bin/env python
-
 import os, json, smtplib, ssl, sqlite3
 
-from email.message import EmailMessage
-from pathlib import Path
-from typing import Sequence
 from datetime import date, timedelta
+from pathlib import Path
+from email.message import EmailMessage
+from collections.abc import Iterator, Sequence
 
 # For testing purpose only
 if __name__ != "__main__":
-    import config_example as config
+    import sample_config as config
 
 
-def create_schema():
+def create_schema() -> None:
     """Create database schema for zettel-merken note schedules"""
     with sqlite3.connect(config.DB_PATH) as cx:
         cu = cx.cursor()
@@ -30,17 +28,15 @@ def create_schema():
         cu.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_note ON note_schedule (note)")
 
 
-def notes_list(dirs: Sequence[str]):
+def notes_list(dirs: Sequence[str]) -> Iterator[Path]:
     """Get a list of notes from a list of directories"""
 
     for dir in dirs:
         for note in os.listdir(dir):
-            if Path(note).suffix in [
-                ".md",
-                ".txt",
-                ".org",
-                ".norg",
-            ]:
+            if (
+                Path(note).suffix in config.INCLUDE_EXT
+                and note not in config.IGNORE_FILES
+            ):
                 yield Path(dir + os.sep + note).resolve()
 
 
@@ -52,7 +48,7 @@ class ScheduleExhausted(Exception):
     """When the note has beeen sent on all the scheduled days"""
 
 
-def create_note_schedule(note: Path, schedule_days: tuple):
+def create_note_schedule(note: Path, schedule_days: tuple) -> None:
     """Create a schedule for a given note"""
 
     stats = {"mtime": os.stat(note).st_mtime}
@@ -93,12 +89,12 @@ def is_note_scheduled(note: Path):
         return False
 
 
-def build_mail_content(notes: list[Path]):
+def build_mail_content(notes: list[Path]) -> str:
     """Create a mail from a list of notes"""
     return "\n\n".join(open(note).read() for note in notes)
 
 
-def send_mail(mail_content: str):
+def send_mail(mail_content: str) -> None:
     """Send an email containing contents of notes list scheduled for this run"""
 
     msg = EmailMessage()
@@ -114,7 +110,7 @@ def send_mail(mail_content: str):
         server.send_message(msg)
 
 
-def update_schedule(notes: list[Path]):
+def update_schedule(notes: list[Path]) -> None:
     """If a note was mailed, update in database"""
 
     notes_list = [str(note) for note in notes]
@@ -137,7 +133,7 @@ def update_schedule(notes: list[Path]):
             )
 
 
-def main():
+def main() -> None:
     create_schema()
 
     scheduled_notes: list[Path] = []
@@ -153,9 +149,10 @@ def main():
         except ScheduleExhausted:
             continue
 
-    mail_content = build_mail_content(scheduled_notes)
-    send_mail(mail_content)
-    update_schedule(scheduled_notes)
+    if scheduled_notes:
+        mail_content = build_mail_content(scheduled_notes)
+        send_mail(mail_content)
+        update_schedule(scheduled_notes)
 
 
 if __name__ == "__main__":

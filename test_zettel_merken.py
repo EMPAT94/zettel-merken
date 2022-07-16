@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import date, timedelta
 
 import zettel_merken as zm
-from config_example import *
+from sample_config import *
 
 
 note1 = Path("./sample_folder/note_folder_1/note-1.md").absolute()
