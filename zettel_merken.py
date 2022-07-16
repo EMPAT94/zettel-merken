@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os, json, smtplib, ssl, sqlite3
 
 from datetime import date, timedelta
@@ -70,7 +72,9 @@ def is_note_scheduled(note: Path):
     with sqlite3.connect(config.DB_PATH) as cx:
         data = (
             cx.cursor()
-            .execute(f"SELECT schedule FROM note_schedule WHERE note = '{note}'")
+            .execute(
+                "SELECT schedule FROM note_schedule WHERE note = (?)", (str(note),)
+            )
             .fetchone()
         )
 
@@ -134,18 +138,23 @@ def update_schedule(notes: list[Path]) -> None:
 
 
 def main() -> None:
+    print("Zettel Merken Daily Review running...")
+
     create_schema()
 
     scheduled_notes: list[Path] = []
 
     for note in notes_list(config.NOTE_DIRS):
+        if len(scheduled_notes) > config.MAX_NOTES_PER_MAIL:
+            break
+
         try:
             if is_note_scheduled(note):
                 scheduled_notes.append(note)
-                if len(scheduled_notes) > config.MAX_NOTES_PER_MAIL:
-                    break
+
         except ScheduleNotFound:
             create_note_schedule(note, config.SCHEDULE_DAYS)
+
         except ScheduleExhausted:
             continue
 

@@ -1,8 +1,6 @@
-# USAGE: zettel-merken $ python -m pytest
-
 import json, sqlite3, pytest
 from pathlib import Path
-from datetime import date, timedelta
+from datetime import date
 
 import zettel_merken as zm
 from sample_config import *
@@ -74,5 +72,5 @@ def test_update_schedule():
 def test_cleanup():
     with sqlite3.connect(DB_PATH) as cx:
         cu = cx.cursor()
-        cu.execute("drop table if exists note_schedule")
-        cu.execute("drop index if exists idx_note")
+        cu.execute("DROP TABLE IF EXISTS note_schedule")
+        cu.execute("DROP INDEX IF EXISTS idx_note")
