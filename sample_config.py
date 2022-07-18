@@ -75,6 +75,15 @@ IGNORE_FILES = ("ignore-file.md",)
 
 
 # ---------------------------------------------------------------------------- #
+# IGNORE_DIRS:
+#
+# List of directories (prefer absolute paths) to be excluded from search.
+# ---------------------------------------------------------------------------- #
+
+IGNORE_DIRS = ("./sample_folder/ignore-folder/",)
+
+
+# ---------------------------------------------------------------------------- #
 # INCLUDE_EXT:
 #
 # List of file extentions to determine if a file should be considered a note.

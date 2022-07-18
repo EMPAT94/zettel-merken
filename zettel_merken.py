@@ -34,20 +34,22 @@ def notes_list(dirs: Sequence[str]) -> Iterator[Path]:
     """Get a list of notes from a list of directories"""
 
     for dir in dirs:
-        for note in os.listdir(dir):
-            if (
-                Path(note).suffix in config.INCLUDE_EXT
-                and note not in config.IGNORE_FILES
-            ):
-                yield Path(dir + os.sep + note).resolve()
+        for path, dirs, files in os.walk(dir):
+            if path not in config.IGNORE_DIRS:
+                for file in files:
+                    if (
+                        Path(file).suffix in config.INCLUDE_EXT
+                        and file not in config.IGNORE_FILES
+                    ):
+                        yield Path(path + os.sep + file).resolve()
 
 
 class ScheduleNotFound(Exception):
-    """When a note schedule is not found in database"""
+    pass
 
 
 class ScheduleExhausted(Exception):
-    """When the note has beeen sent on all the scheduled days"""
+    pass
 
 
 def create_note_schedule(note: Path, schedule_days: tuple) -> None:
@@ -57,12 +59,12 @@ def create_note_schedule(note: Path, schedule_days: tuple) -> None:
     schedule = sorted(
         date.toordinal(date.today() + timedelta(s)) for s in schedule_days
     )
-    sent = "[]"
+    sent = []
 
     with sqlite3.connect(config.DB_PATH) as cx:
         cx.cursor().execute(
             "insert into note_schedule (note, stats, schedule, sent) values (?, ?, ?, ?)",
-            (str(note), json.dumps(stats), json.dumps(schedule), sent),
+            (str(note), json.dumps(stats), json.dumps(schedule), json.dumps(sent)),
         )
 
 
@@ -79,12 +81,13 @@ def is_note_scheduled(note: Path):
         )
 
         if not data:
-            raise ScheduleNotFound
-
-        if not data[0]:
-            raise ScheduleExhausted
+            raise ScheduleNotFound("Note data not found.")
 
         schedule = json.loads(data[0])
+
+        if not schedule:
+            raise ScheduleExhausted("Note schedule is empty.")
+
         today = date.toordinal(date.today())
         for day in schedule:
             if day <= today:
@@ -95,7 +98,7 @@ def is_note_scheduled(note: Path):
 
 def build_mail_content(notes: list[Path]) -> str:
     """Create a mail from a list of notes"""
-    return "\n\n".join(open(note).read() for note in notes)
+    return "\n\n".join(str(note) + "\n" + open(note).read() for note in notes)
 
 
 def send_mail(mail_content: str) -> None:
@@ -128,18 +131,19 @@ def update_schedule(notes: list[Path]) -> None:
         )
 
         today = date.toordinal(date.today())
+
         for (id, schedule, sent) in notes_to_update:
-            schedule = json.loads(schedule).pop()
-            sent = json.loads(sent).append(today)
+            schedule = json.loads(schedule)
+            schedule = schedule[1:]  # Remove first element
+            sent = json.loads(sent)
+            sent.append(today)  # Append today's date
             cu.execute(
-                "UPDATE note_schedule SET schedule = (?) and sent = (?) WHERE id = (?)",
-                (schedule, sent, id),
+                "UPDATE note_schedule SET schedule=(?), sent=(?) WHERE id=(?)",
+                (json.dumps(schedule), json.dumps(sent), id),
             )
 
 
 def main() -> None:
-    print("Zettel Merken Daily Review running...")
-
     create_schema()
 
     scheduled_notes: list[Path] = []
@@ -151,10 +155,8 @@ def main() -> None:
         try:
             if is_note_scheduled(note):
                 scheduled_notes.append(note)
-
         except ScheduleNotFound:
             create_note_schedule(note, config.SCHEDULE_DAYS)
-
         except ScheduleExhausted:
             continue
 

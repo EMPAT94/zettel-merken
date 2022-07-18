@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
+#
+# USAGE:
+#
+# zettel-merken $ ./add_systemd_timer.bash
+#
+# DESCRIPTION:
+#
+# This nifty little script creates systemd user units
+# for running zettel-merken once per day.
+
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -47,4 +57,3 @@ systemctl --user status zettel-merken.timer
 
 # Check your zettel-merken logs like so:
 # $ journalctl --user -u zettel-merken
-# should show "Zettel Merken Daily Review running..."
