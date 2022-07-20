@@ -23,6 +23,7 @@ mkdir -p $CONF_DIR
 echo "\
 [Unit]
 Description=Zettel Merken Daily Review Timer
+After=network-online.target
 
 [Timer]
 Persistent=true

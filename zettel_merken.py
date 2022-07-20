@@ -34,14 +34,16 @@ def notes_list(dirs: Sequence[str]) -> Iterator[Path]:
     """Get a list of notes from a list of directories"""
 
     for dir in dirs:
-        for path, dirs, files in os.walk(dir):
-            if path not in config.IGNORE_DIRS:
-                for file in files:
-                    if (
-                        Path(file).suffix in config.INCLUDE_EXT
-                        and file not in config.IGNORE_FILES
-                    ):
-                        yield Path(path + os.sep + file).resolve()
+        for path, dirs, files in os.walk(dir, topdown=True):
+            dirs[:] = (
+                d for d in dirs if d not in config.IGNORE_DIRS and not d.startswith(".")
+            )
+            for file in files:
+                if (
+                    Path(file).suffix in config.INCLUDE_EXT
+                    and file not in config.IGNORE_FILES
+                ):
+                    yield Path(path + os.sep + file).resolve()
 
 
 class ScheduleNotFound(Exception):
