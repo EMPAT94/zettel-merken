@@ -7,10 +7,7 @@
 <p align="center">
   <a href="https://github.com/EMPAT94/zettel-merken/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/EMPAT94/zettel-merken"></a>
   <a href="https://github.com/EMPAT94/zettel-merken/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/EMPAT94/zettel-merken"></a>
-  <!-- <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/empat94/zettel-merken/nodemailer"> -->
-  <!-- <img alt="Snyk Vulnerabilities for npm package" src="https://img.shields.io/snyk/vulnerabilities/npm/nodemailer"> -->
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/empat94/zettel-merken">
-  <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/EMPAT94/zettel-merken"></p>
 <br />
 
 # Introduction
@@ -86,8 +83,6 @@ Thus, my `index.md` will look like:
 
 - [Learning French](./learning-french.md)
 
-- [Code Notes](./code-notes.md)
-
 - [Transactions](./transactions.md)
 ```
 
@@ -130,8 +125,7 @@ For example, `basics-1.1` might look like:
 
 - un garcon = a boy (sounds: un gars-on)
 
-- un chat et un homme
-  - A cat and a man
+- un chat et un homme = A cat and a man
 ```
 
 and a transaction file `01-2022` would be:
@@ -165,42 +159,33 @@ Excerpt from [e-student.org](https://e-student.org/spaced-repetition/):
 
 ### How I use Spaced Repetition
 
-Or rather how I to use Spaced Repetition _using Zettel Merken_. In the code above, you'll notice a `config.example.json` file. It contains path to each of my "hub" in `note_folders` array.
+Or rather how I to use Spaced Repetition _using Zettel Merken_. In the code above, you'll notice a `sample_config.py` file. It contains path to each of my "hub" in `NOTE_DIRS` list.
 
 So, for example, if I wished to add my french vocabulary to the learning track as and when I learn new words, I would have the following config:
 
-```json
-  "note_folders": [
-    {
-      "path": "/path/to/notes/learning-french",
-    }
-  ],
+```python
+NOTE_DIRS = ("/path/to/notes/learning-french",)
 ```
 
-Once set, I will automatically get an email for each lesson at specified intervals! Génial!
+The current interval spacing is : Day 1 -> 3 -> 7 -> 14 -> 30 -> 60 -> 120
 
-The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 -> Day 60
+**_IMPORTANT_**: See `sample_config.py` for more options!
 
 ## Setting up Zettel-Merken
 
-- Clone repository and npm install
+- Clone the repo
 
-  ```sh
-  git clone --depth=1 <link>
-  npm install --prod
+  ```shell
+  $ git clone --depth=1 https://github.com/EMPAT94/zettel-merken.git
   ```
 
-- Rename config.example.json to config.json and update (see Advanced Config options)
+- Copy (Do not rename!) `sample_config.py` to `config.py`
 
-  ```sh
-  mv config.example.json config.json
+  ```shell
+  $ cp sample_config.py config.py
   ```
 
-- Do a dry run to check everything valid
-
-  ```sh
-  npm run test
-  ```
+- Update config.py as necessary
 
 - Set up a timer to run program using either systemd timers or crontab
 
@@ -208,8 +193,8 @@ The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 ->
 
 - Using script:
 
-  ```sh
-  ./configure-systemd.sh
+  ```shell
+  $ python extras/add_systemd_timer.py
   ```
 
 - Manually:
@@ -224,11 +209,12 @@ The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 ->
 
     ```ini
     [Unit]
-    Description=Zettel Merken Email Timer
+    Description=Zettel Merken Daily Review Timer
 
     [Timer]
     Persistent=true
     OnCalendar=Daily
+    OnBoot=true
 
     [Install]
     WantedBy=timers.target
@@ -238,10 +224,10 @@ The current interval spacing is : Day 1 -> Day 3 -> Day 6 -> Day 14 -> Day 30 ->
 
     ```ini
     [Unit]
-    Description=Zettel Merken Email Service
+    Description=Zettel Merken Daily Review Service
 
     [Service]
-    ExecStart=/path/to/zettel-merken/src/server.js
+    ExecStart=/path/to/zettel-merken/zettel_merken.py
 
     [Install]
     WantedBy=default.target

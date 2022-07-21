@@ -4,8 +4,7 @@ import json, sqlite3, pytest
 from pathlib import Path
 from datetime import date
 
-import zettel_merken as zm
-from sample_config import *
+import src.zettel_merken as zm
 
 
 note1 = Path("./sample_folder/note_folder_1/note-1.md").absolute()

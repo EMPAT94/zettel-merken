@@ -56,5 +56,5 @@ systemctl --user enable --now zettel-merken.timer
 # Ensure everything worked fine
 systemctl --user status zettel-merken.timer
 
-# Check your zettel-merken logs like so:
+# Check your zettel-merken logs:
 # $ journalctl --user -u zettel-merken
