@@ -19,13 +19,13 @@ if os.name != "posix":
 
 MAIN_DIR = Path(__file__).parent.parent
 CONF_DIR = Path("~/.config/systemd/user").expanduser().resolve()
-TIMER_FILE = CONF_DIR / "zettel_merken.timer"
-UNIT_FILE = CONF_DIR / "zettel_merken.service"
+TIMER_UNIT = CONF_DIR / "zettel_merken.timer"
+SERVICE_UNIT = CONF_DIR / "zettel_merken.service"
 
 if not CONF_DIR.exists():
     os.mkdir(CONF_DIR)
 
-with open(TIMER_FILE, "w") as timer:
+with open(TIMER_UNIT, "w") as timer:
     timer.write(
         """\
             [Unit]
@@ -42,8 +42,8 @@ with open(TIMER_FILE, "w") as timer:
             """
     )
 
-with open(UNIT_FILE, "w") as unit:
-    unit.write(
+with open(SERVICE_UNIT, "w") as service:
+    service.write(
         f"""\
             [Unit]
             Description=Zettel Merken Daily Review Service
@@ -57,8 +57,11 @@ with open(UNIT_FILE, "w") as unit:
             """
     )
 
+# Check if unit file was successfully created
+# $ less ~/.config/systemd/user/zettel_merken.service
+
 # Reload systemd units
-run("systemctl --user daemon-reload", shell=True, check=True)
+run("systemctl --user daemon-reload", shell=True)
 
 # Enable zettel-merken timer
 run("systemctl --user enable --now zettel_merken.timer", shell=True)

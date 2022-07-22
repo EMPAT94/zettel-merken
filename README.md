@@ -1,6 +1,6 @@
 <br />
 
-<h1 align="center">ZETTEL MERKEN (under construction)</h1>
+<h1 align="center">ZETTEL MERKEN v0.1</h1>
 
 <p align="center">Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</p>
 
@@ -47,7 +47,7 @@ That's it! To expand on the above, here is a sample of my current notes director
 
 ```sh
 
-~/notes
+~/Notes
 ├── index.md
 ├── books-and-articles.md
 ├── books-and-articles
@@ -56,25 +56,20 @@ That's it! To expand on the above, here is a sample of my current notes director
 ├── code-notes.md
 ├── code-notes
 │  ├── python.md
-│  ├── python
-│  │  └── basics.md
-│  ├── vim.md
+│  └── vim.md
 ├── learning-french.md
 ├── learning-french
 │  ├── basics-1.1.md
 │  ├── basics-1.2.md
-│  ├── basics-1.3.md
+│  └── basics-1.3.md
 ├── transactions.md
-├── transactions
-│  ├── 01-2022.md
-│  └── 02-2022.md
-├── zettel-merken.md
-└── zettel-merken
-   └── research-in-spaced-repeatition.md
+└── transactions
+   ├── 01-2022.md
+   └── 02-2022.md
 
 ```
 
-As you can see above, I have hubs after each topic: zettel-merken, books-and-articles, learning-french, etc. Each hub has a file.md and folder with the same name. I take all my notes in neovim in markdown format (No special plugins!). I have written a couple of helper functions that make it easy to create hubs and zettels but that is all.
+As you can see above, I have hubs after each topic: zettel-merken, books-and-articles, learning-french, etc. Each hub has a file.md and folder with the same name. I take all my notes in neovim in markdown format No special plugins, just a couple of functions and mapping. See wiki.
 
 Thus, my `index.md` will look like:
 
@@ -82,11 +77,9 @@ Thus, my `index.md` will look like:
 # INDEX
 
 - [Learning French](./learning-french.md)
-
-- [Transactions](./transactions.md)
 ```
 
-and my `learning-french.md` and `transaction.md` respectively:
+and my `learning-french.md`:
 
 ```markdown
 # Learning French
@@ -98,15 +91,7 @@ and my `learning-french.md` and `transaction.md` respectively:
 - [Basics 1.3](./learning-french/basics-1.3.md)
 ```
 
-```markdown
-# Transactions
-
-- [01-2022](./transactions/01-2022.md)
-
-- [02-2022](./transactions/02-2022.md)
-```
-
-Concerning zettels, I try to have them in an easily digestible format. Each zettels has a microscopic focus on the information it is trying to convey. That is: all the content inside a zettel must directly relate to a single matter or flow in one direction. The size of the file is irrelevant, although I try to keep it short and simple.
+Concerning zettels, I try to have them in an easily digestible format. Each zettels has a microscopic focus on the information it is trying to convey. That is - all the content inside a zettel must directly relate to a single matter or flow in one direction. The size of the file is irrelevant, although I try to keep it short and simple.
 
 For example, `basics-1.1` might look like:
 
@@ -128,18 +113,9 @@ For example, `basics-1.1` might look like:
 - un chat et un homme = A cat and a man
 ```
 
-and a transaction file `01-2022` would be:
+Also, I _try_ to avoid more than one layer of nesting below the "notes" folder but in some cases, it is inevitable. However, there should never be a need to go beyond two layers.
 
-```markdown
-# 01-2022
-
-| Date | From | To  | Amount | Category | Tag | Comment |
-| ---- | ---- | --- | ------ | -------- | --- | ------- |
-```
-
-Also, I _try_ to avoid more than one layer of nesting below the "notes" folder but in some cases like the above "python" notes, it is inevitable. However, there should never be a need to go beyond two layers.
-
-After following the above system consistently for a few months, you'll have a decent-sized collection of notes all linked together and also in a proper structure. That being said, simply "collecting" notes is never going to help you learn in the long term. That is where the Spaced Repetition comes in!
+After following the above system consistently for a few months, you'll have a decent-sized collection of notes all linked together in a proper structure. That being said, simply "collecting" notes is never going to help you learn in the long term. That is where the Spaced Repetition comes in!
 
 ## What is Spaced Repetition?
 
@@ -157,108 +133,66 @@ Excerpt from [e-student.org](https://e-student.org/spaced-repetition/):
 
 > Spaced repetition is a memory technique that involves reviewing and recalling information at optimal spacing intervals until the information is learned at a sufficient level.
 
-### How I use Spaced Repetition
+It is quite difficult to manually track hundreds of notes and review a set everyday. You'd have to keep logs of when each topic was visited, how many repetitions were completed, when the next review will be and so on. Quite cumbersome!
 
-Or rather how I to use Spaced Repetition _using Zettel Merken_. In the code above, you'll notice a `sample_config.py` file. It contains path to each of my "hub" in `NOTE_DIRS` list.
+That is were Zettel Merken comes into play. Not only does this program keep track of your every note and its schedule, it also automatically emails notes that are due for review for the day! How awesome is that? It is quite easy to use too!
 
-So, for example, if I wished to add my french vocabulary to the learning track as and when I learn new words, I would have the following config:
+## Usage
 
-```python
-NOTE_DIRS = ("/path/to/notes/learning-french",)
+### Installation
+
+**_NOTE: This code was written in and tested on Manjaro Linux (kernel 5.18) with Python 3.10.5_**
+
+For now, I have not published the code in any package repository. I am new to python and I probably butchered the standard package structure here. So (for the time being), you'll have to install using git. Fear not though, it is fairly simple.
+
+1. First, pull a clone of this repository in a convenient directory:
+
+   ```shell
+   $ git clone --depth=1 https://github.com/EMPAT94/zettel-merken.git
+   ```
+
+2. Next, test that it is working properly on your machine:
+
+   ```shell
+   zettel-merken $ python -m unittest -q test_zettel_merken.py
+   ```
+
+3. All tests pass successfully? Awesome. Copy example config into zettel-merken's working directory:
+
+   ```shell
+   zettel-merken $ cp extras/config.example.json ~/.config/zettel-merken/config.json
+   ```
+
+Note that,
+
+    * The directory `zettel_merken` was probably already created if you ran the tests
+    * If you don't use `~/.config`, then it is in your home directory
+
+At this point, the installation is complete. But wait, we are not done yet!
+
+### Configuration
+
+The program has no clue about how you arrange notes (or where). Nor does it have any idea who to send the email to (and from whom!). These settings go into `config.json` that we copied in the earlier step.
+
+The config is fairly self-explanatory. And there is also a wiki page for more details on the various knobs. Have a looksie.
+
+Once the config is setup, we move on to the meat of the matter...
+
+Which is a single command:
+
+```shell
+zettel-merken $ python extras/add_systemd_units.py
 ```
 
-The current interval spacing is : Day 1 -> 3 -> 7 -> 14 -> 30 -> 60 -> 120
+As the name suggests, this sets up the daily review job for us.
 
-**_IMPORTANT_**: See `sample_config.py` for more options!
+Oh, do take a look inside. It is a petite little script that add systemd timer/service units and activates them!
 
-## Setting up Zettel-Merken
+Enjoy!
 
-- Clone the repo
+## TODOs
 
-  ```shell
-  $ git clone --depth=1 https://github.com/EMPAT94/zettel-merken.git
-  ```
-
-- Copy (Do not rename!) `sample_config.py` to `config.py`
-
-  ```shell
-  $ cp sample_config.py config.py
-  ```
-
-- Update config.py as necessary
-
-- Set up a timer to run program using either systemd timers or crontab
-
-### Configuring systemd timer
-
-- Using script:
-
-  ```shell
-  $ python extras/add_systemd_timer.py
-  ```
-
-- Manually:
-
-  - Create directoy for systemd in .config
-
-    ```sh
-    mkdir -p $HOME/.config/systemd/user
-    ```
-
-  - Create a file zettel-merken.timer inside ~/.config/systemd/user/ with following content:
-
-    ```ini
-    [Unit]
-    Description=Zettel Merken Daily Review Timer
-
-    [Timer]
-    Persistent=true
-    OnCalendar=Daily
-    OnBoot=true
-
-    [Install]
-    WantedBy=timers.target
-    ```
-
-  - Create a file zettel-merken.service inside ~/.config/systemd/user/ with following content:
-
-    ```ini
-    [Unit]
-    Description=Zettel Merken Daily Review Service
-
-    [Service]
-    ExecStart=/path/to/zettel-merken/zettel_merken.py
-
-    [Install]
-    WantedBy=default.target
-    ```
-
-    - Do note the ExecStart command, change the path as necessary
-
-  - Reload systemd daemon
-
-    ```sh
-    systemctl --user daemon-reload
-    ```
-
-  - Start timer, autostarts on boot
-
-    ```sh
-    systemctl --user enable --now zettel-merken.timer
-    ```
-
-  - Ensure timer is 'active'
-
-    ```sh
-    systemctl --user status zettel-merken.timer
-    ```
-
-### Configuring crontab [TODO]
-
-## Advanced Configuration [TODO]
-
-## Tips and tools [TODO]
-
-## Roadmap [TODO]
-
-## Notes & Bugs [TODO]
+- [ ] Add slack webhook alternative to email
+- [ ] Publish to pypi?
+- [ ] Add per-note schedule?
+- [ ] Docker Image?

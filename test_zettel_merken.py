@@ -39,7 +39,8 @@ class TestHelpers(unittest.TestCase):
 
     def test_get_notes_list(self):
         config = cfg.get_config(config_file)
-        self.assertListEqual(notes, list(hlp.get_notes_list(config)))
+        for note in notes:
+            self.assertIn(note, list(hlp.get_notes_list(config)))
 
 
 class TestDb(unittest.TestCase):
