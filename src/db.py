@@ -5,7 +5,7 @@ import sqlite3
 from datetime import date, timedelta
 from pathlib import Path
 
-from . import config as cfg
+from src import config as cfg
 
 
 class ScheduleNotFound(BaseException):

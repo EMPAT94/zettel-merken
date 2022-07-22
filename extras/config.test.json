@@ -1,5 +1,5 @@
 {
-  "NOTE_DIRS": ["extras/test_folder"],
+  "NOTE_DIRS": ["./extras/test_folder"],
 
   "EMAIL": {
     "USER": "sender@gmail.com",

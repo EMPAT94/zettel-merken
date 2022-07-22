@@ -9,22 +9,23 @@
 # This nifty little script creates systemd user units
 # for running zettel-merken once per day.
 
+import os
 from subprocess import run
 from pathlib import Path
-import os
-
-ZETTEL_DIR = Path(__file__).parent.parent
 
 if os.name != "posix":
     print("This script for only systemd users!")
     exit()
 
+MAIN_DIR = Path(__file__).parent.parent
 CONF_DIR = Path("~/.config/systemd/user").expanduser().resolve()
+TIMER_FILE = CONF_DIR / "zettel_merken.timer"
+UNIT_FILE = CONF_DIR / "zettel_merken.service"
+
 if not CONF_DIR.exists():
     os.mkdir(CONF_DIR)
 
-timer_file = CONF_DIR / "zettel_merken.timer"
-with open(timer_file, "wt") as timer:
+with open(TIMER_FILE, "w") as timer:
     timer.write(
         """\
             [Unit]
@@ -34,15 +35,14 @@ with open(timer_file, "wt") as timer:
             [Timer]
             Persistent=true
             OnCalendar=Daily
-            OnBootSec=120
+            OnBootSec=300
 
             [Install]
             WantedBy=timers.target\
             """
     )
 
-unit_file = CONF_DIR / "zettel_merken.service"
-with open(unit_file, "wt") as unit:
+with open(UNIT_FILE, "w") as unit:
     unit.write(
         f"""\
             [Unit]
@@ -50,7 +50,7 @@ with open(unit_file, "wt") as unit:
 
             [Service]
             Type=simple
-            ExecStart=/usr/bin/python {ZETTEL_DIR}/src/zettel_merken.py
+            ExecStart=/usr/bin/python {MAIN_DIR}
 
             [Install]
             WantedBy=default.target\

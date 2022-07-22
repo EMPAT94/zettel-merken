@@ -9,18 +9,15 @@ class ConfigNotFound(BaseException):
 
 
 @dataclass(frozen=True)
-class Email:
-    """Email object in config containing sender details"""
-
-    USER: str
-    PASS: str = field(repr=False)
-    HOST: str
-    PORT: int
-
-
-@dataclass(frozen=True)
 class Config:
     """Config object build from config.json"""
+
+    @dataclass(frozen=True)
+    class Email:
+        USER: str
+        PASS: str = field(repr=False)
+        HOST: str
+        PORT: int
 
     NOTE_DIRS: list[str]
     EMAIL: Email
@@ -42,4 +39,4 @@ def get_config(config_file: Path) -> Config:
         config = json.load(f)
         email = config["EMAIL"]
         del config["EMAIL"]
-        return Config(**config, EMAIL=Email(**email))
+        return Config(**config, EMAIL=Config.Email(**email))

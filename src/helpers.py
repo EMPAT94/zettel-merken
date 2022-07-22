@@ -3,10 +3,10 @@ import os
 from pathlib import Path
 from collections.abc import Iterator
 
-from . import config as cfg
+from src import config as cfg
 
 
-def notes_list(config: cfg.Config) -> Iterator[Path]:
+def get_notes_list(config: cfg.Config) -> Iterator[Path]:
     """Get a list of notes from a list of directories"""
 
     for dir in config.NOTE_DIRS:
