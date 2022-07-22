@@ -1,17 +1,12 @@
-import smtplib, ssl
+import smtplib
+import ssl
 
-from pathlib import Path
 from email.message import EmailMessage
 
-from config import Config
+from . import config as cfg
 
 
-def build_mail_content(notes: list[Path]) -> str:
-    """Create a mail from a list of notes"""
-    return "\n\n".join(str(note) + "\n" + open(note).read() for note in notes)
-
-
-def send_mail(mail_content: str, config: Config) -> None:
+def send_mail(mail_content: str, config: cfg.Config) -> None:
     """Send an email containing contents of notes list scheduled for this run"""
 
     msg = EmailMessage()
@@ -24,4 +19,8 @@ def send_mail(mail_content: str, config: Config) -> None:
         config.EMAIL.HOST, config.EMAIL.PORT, context=ssl.create_default_context()
     ) as server:
         server.login(config.EMAIL.USER, config.EMAIL.PASS)
+        # SMTPHeloError            The server didn't reply properly to the helo greeting.
+        # SMTPAuthenticationError  The server didn't accept the username password combination.
+        # SMTPNotSupportedError    The AUTH command is not supported by the server.
+        # SMTPException            No suitable authentication method was found.
         server.send_message(msg)

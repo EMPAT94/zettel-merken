@@ -1,0 +1,22 @@
+{
+  "NOTE_DIRS": ["extras/test_folder"],
+
+  "EMAIL": {
+    "USER": "sender@gmail.com",
+    "PASS": "sample_password",
+    "HOST": "smtp.gmail.com",
+    "PORT": 465
+  },
+
+  "RECEIVERS": ["receiver@gmail.com"],
+
+  "MAX_NOTES_PER_MAIL": 10,
+
+  "IGNORE_FILES": ["ignore-file.md"],
+
+  "IGNORE_DIRS": ["ignore-folder"],
+
+  "INCLUDE_EXT": [".md", ".txt", ".org", ".norg"],
+
+  "SCHEDULE_DAYS": [1, 3, 7, 14, 30, 60, 120]
+}
