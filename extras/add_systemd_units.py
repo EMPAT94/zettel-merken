@@ -1,13 +1,5 @@
-#!/usr/bin/env python
-
-# USAGE:
-#
-# zettel-merken $ python extras/add_systemd_timer.py
-#
-# DESCRIPTION:
-#
-# This nifty little script creates systemd user units
-# for running zettel-merken once per day.
+"""This nifty little script creates systemd user units\
+        for running zettel-merken once per day. """
 
 import os
 from subprocess import run
