@@ -148,19 +148,19 @@ For now, I have not published the code in any package repository. I am new to py
 1. First, pull a clone of this repository in a convenient directory:
 
    ```shell
-   $ git clone --depth=1 https://github.com/EMPAT94/zettel-merken.git
+   git clone --depth=1 https://github.com/EMPAT94/zettel-merken.git
    ```
 
-2. Next, test that it is working properly on your machine:
+2. Next, cd inside and test that it is working properly on your machine:
 
    ```shell
-   zettel-merken $ python -m unittest -q test_zettel_merken.py
+   python -m unittest -q test_zettel_merken.py
    ```
 
 3. All tests pass successfully? Awesome. Copy example config into zettel-merken's working directory:
 
    ```shell
-   zettel-merken $ cp extras/config.example.json ~/.config/zettel-merken/config.json
+   cp extras/config.example.json ~/.config/zettel_merken/config.json
    ```
 
 Note that,
@@ -181,7 +181,7 @@ Once the config is setup, we move on to the meat of the matter...
 Which is a single command:
 
 ```shell
-zettel-merken $ python extras/add_systemd_units.py
+python extras/add_systemd_units.py
 ```
 
 As the name suggests, this sets up the daily review job for us.
