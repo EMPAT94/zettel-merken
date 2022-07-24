@@ -1,13 +1,20 @@
+<img src="extras/Zettel-Merken-Github.png" alt="Zettel Merken Image">
+
 <br />
 
-<h1 align="center">ZETTEL MERKEN v0.1</h1>
-
-<p align="center">Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</p>
+<br />
 
 <p align="center">
+<img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/empat94/zettel-merken">
   <a href="https://github.com/EMPAT94/zettel-merken/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/EMPAT94/zettel-merken"></a>
   <a href="https://github.com/EMPAT94/zettel-merken/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/EMPAT94/zettel-merken"></a>
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/empat94/zettel-merken">
+<br />
+
+<hr />
+<p align="center"><strong>Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</strong></p>
+<hr />
+
 <br />
 
 # Introduction
@@ -125,7 +132,7 @@ Excerpt from [Wikipedia article](https://en.wikipedia.org/wiki/Spaced_repetition
 
 <br />
 <div align="center">
-<a title="The original uploader was Icez at English Wikipedia., Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:ForgettingCurve.svg"><img width="256" alt="ForgettingCurve" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/ForgettingCurve.svg/256px-ForgettingCurve.svg.png"></a>
+<a title="The original uploader was Icez at English Wikipedia., Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:ForgettingCurve.svg"><img style="background-color:white" width="256" alt="ForgettingCurve" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/ForgettingCurve.svg/256px-ForgettingCurve.svg.png"></a>
 </div>
 <br />
 
@@ -165,8 +172,8 @@ For now, I have not published the code in any package repository. I am new to py
 
 Note that,
 
-    * The directory `zettel_merken` was probably already created if you ran the tests
-    * If you don't use `~/.config`, then it is in your home directory
+- The directory `zettel_merken` was probably already created if you ran the tests
+- If you don't use `~/.config`, then it is in your home directory
 
 At this point, the installation is complete. But wait, we are not done yet!
 
@@ -193,6 +200,7 @@ Enjoy!
 ## TODOs
 
 - [ ] Add slack webhook alternative to email
+- [ ] Add a wiki
 - [ ] Publish to pypi?
 - [ ] Add per-note schedule?
 - [ ] Docker Image?
