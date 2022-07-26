@@ -2,7 +2,9 @@
 
 <br />
 
-<br />
+<hr />
+<p align="center"><strong>Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</strong></p>
+<hr />
 
 <p align="center">
 <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/empat94/zettel-merken">
@@ -10,10 +12,6 @@
   <a href="https://github.com/EMPAT94/zettel-merken/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/EMPAT94/zettel-merken"></a>
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/empat94/zettel-merken">
 <br />
-
-<hr />
-<p align="center"><strong>Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</strong></p>
-<hr />
 
 <br />
 
@@ -201,6 +199,7 @@ Enjoy!
 
 - [ ] Add slack webhook alternative to email
 - [ ] Add a wiki
-- [ ] Publish to pypi?
-- [ ] Add per-note schedule?
+- [ ] Publish to PyPI?
+- [ ] Windows/Mac Support?
+- [ ] Per-note schedule?
 - [ ] Docker Image?

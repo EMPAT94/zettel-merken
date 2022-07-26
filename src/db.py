@@ -5,7 +5,7 @@ import sqlite3
 from datetime import date, timedelta
 from pathlib import Path
 
-from src import config as cfg
+from src.config import Config
 
 
 class ScheduleNotFound(BaseException):
@@ -17,7 +17,7 @@ class ScheduleExhausted(BaseException):
 
 
 class Db:
-    def __init__(self, db_path: Path, config: cfg.Config) -> None:
+    def __init__(self, db_path: Path, config: Config) -> None:
         self.config = config
         self.DB_PATH = db_path
 

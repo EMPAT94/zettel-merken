@@ -1,12 +1,12 @@
 import os
-
+from contextlib import ExitStack
 from pathlib import Path
 from collections.abc import Iterator
 
-from src import config as cfg
+from src.config import Config
 
 
-def get_notes_list(config: cfg.Config) -> Iterator[Path]:
+def get_notes_list(config: Config) -> Iterator[Path]:
     """Get a list of notes from a list of directories"""
 
     for dir in config.NOTE_DIRS:
@@ -38,3 +38,9 @@ def get_app_path() -> Path:
         os.mkdir(app_path)
 
     return app_path
+
+
+def get_mail_content(notes: list[Path]) -> str:
+    with ExitStack() as stack:
+        files = [stack.enter_context(open(note)) for note in notes]
+        return "\n\n".join(file.read() + "\n\n" for file in files)

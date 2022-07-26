@@ -6,7 +6,7 @@ from datetime import date
 from pathlib import Path
 
 from src.db import Db, ScheduleExhausted, ScheduleNotFound
-import src.config as cfg
+from src.config import Config, ConfigNotFound
 import src.helpers as hlp
 
 
@@ -23,10 +23,12 @@ db_path = Path("/tmp", "zettel_merken.test.db")
 
 class TestConfig(unittest.TestCase):
     def test_get_config(self):
-        config = cfg.get_config(config_file)
+        config = Config.load_from_file(config_file)
         self.assertEqual(config.MAX_NOTES_PER_MAIL, 10)
         self.assertRaises(
-            cfg.ConfigNotFound, cfg.get_config, Path("extras/not_present.json")
+            ConfigNotFound,
+            Config.load_from_file,
+            Path("extras/not_present.json"),
         )
 
 
@@ -38,21 +40,21 @@ class TestHelpers(unittest.TestCase):
         self.assertIn(hlp.get_app_path(), app_dirs)
 
     def test_get_notes_list(self):
-        config = cfg.get_config(config_file)
+        config = Config.load_from_file(config_file)
         for note in notes:
             self.assertIn(note, list(hlp.get_notes_list(config)))
 
 
 class TestDb(unittest.TestCase):
     def test_create_schema(self):
-        db = Db(db_path, cfg.get_config(config_file))
+        db = Db(db_path, Config.load_from_file(config_file))
         db.create_schema()
         with sqlite3.connect(db.DB_PATH) as cx:
             cx.cursor().execute("SELECT * FROM note_schedule")
 
     def test_create_note_schedule(self):
 
-        db = Db(db_path, cfg.get_config(config_file))
+        db = Db(db_path, Config.load_from_file(config_file))
         db.create_schema()
         db.create_note_schedule(note1, [1, 3, 6])
         db.create_note_schedule(note2, [0])
@@ -80,14 +82,14 @@ class TestDb(unittest.TestCase):
             assert date.toordinal(date.today()) in json.loads(schedule3[0])
 
     def test_is_note_scheduled(self):
-        db = Db(db_path, cfg.get_config(config_file))
+        db = Db(db_path, Config.load_from_file(config_file))
         self.assertFalse(db.is_note_scheduled(note1))
         self.assertTrue(db.is_note_scheduled(note2))
         self.assertTrue(db.is_note_scheduled(note3))
         self.assertRaises(ScheduleNotFound, db.is_note_scheduled, note4)
 
     def test_update_schedule(self):
-        db = Db(db_path, cfg.get_config(config_file))
+        db = Db(db_path, Config.load_from_file(config_file))
 
         db.update_note_schedule([note2])
         self.assertRaises(ScheduleExhausted, db.is_note_scheduled, note2)
@@ -104,7 +106,7 @@ class TestDb(unittest.TestCase):
             self.assertNotIn(date.toordinal(date.today()), json.loads(schedule3[0]))
 
     def tearDownClass():
-        db = Db(db_path, cfg.get_config(config_file))
+        db = Db(db_path, Config.load_from_file(config_file))
 
         with sqlite3.connect(db.DB_PATH) as cx:
             cu = cx.cursor()

@@ -8,11 +8,11 @@ class ConfigNotFound(BaseException):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass
 class Config:
     """Config object build from config.json"""
 
-    @dataclass(frozen=True)
+    @dataclass
     class Email:
         USER: str
         PASS: str = field(repr=False)
@@ -28,15 +28,14 @@ class Config:
     IGNORE_DIRS: list[str]
     INCLUDE_EXT: list[str]
 
+    def __post_init__(self):
+        self.EMAIL = Config.Email(**self.EMAIL)
 
-def get_config(config_file: Path) -> Config:
-    """Parses file config.json into Config class."""
+    def load_from_file(config_file: Path):
+        """Parses file config.json into Config class."""
 
-    if not config_file.exists():
-        raise ConfigNotFound(f"Config file not found at {config_file}")
+        if not config_file.exists():
+            raise ConfigNotFound(f"Config file not found at {config_file}")
 
-    with open(config_file) as f:
-        config = json.load(f)
-        email = config["EMAIL"]
-        del config["EMAIL"]
-        return Config(**config, EMAIL=Config.Email(**email))
+        with open(config_file) as f:
+            return Config(**json.load(f))
