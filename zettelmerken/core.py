@@ -5,7 +5,6 @@ from .mail import send_mail
 
 
 def main() -> None:
-    print("Running")
     app_path = get_app_path()
 
     try:
@@ -41,5 +40,3 @@ def main() -> None:
         mail_content = get_mail_content(scheduled_notes)
         send_mail(mail_content, config)
         db.update_note_schedule(scheduled_notes)
-
-    print("Done")

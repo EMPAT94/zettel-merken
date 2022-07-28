@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "Zettel Merken"
+name = "zettelmerken"
 description = "Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -28,7 +28,7 @@ Issues = "https://github.com/empat94/zettel-merken/issues"
 Source = "https://github.com/empat94/zettel-merken"
 
 [tool.hatch.version]
-path = "zettel_merken/__about__.py"
+path = "zettelmerken/__about__.py"
 
 [tool.hatch.build.targets.sdist]
 [tool.hatch.build.targets.wheel]
@@ -39,7 +39,7 @@ dependencies = [
   "pytest-cov",
 ]
 [tool.hatch.envs.default.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=zettel_merken --cov=tests"
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=zettelmerken --cov=tests"
 no-cov = "cov --no-cov"
 
 [[tool.hatch.envs.test.matrix]]
@@ -49,9 +49,9 @@ python = ["39", "310"]
 branch = true
 parallel = true
 omit = [
-  "zettel_merken/__about__.py",
-  "zettel_merken/__init__.py",
-  "zettel_merken/mail.py",
+  "zettelmerken/__about__.py",
+  "zettelmerken/__init__.py",
+  "zettelmerken/mail.py",
   "tests/*.py"
 ]
 
