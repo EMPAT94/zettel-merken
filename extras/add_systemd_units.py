@@ -1,5 +1,5 @@
 """This nifty little script creates systemd user units\
-        for running zettel-merken once per day. """
+    for running zettel-merken once per day. """
 
 import os
 from subprocess import run
@@ -20,33 +20,33 @@ if not CONF_DIR.exists():
 with open(TIMER_UNIT, "w") as timer:
     timer.write(
         """\
-            [Unit]
-            Description=Zettel Merken Daily Review Timer
-            After=network-online.target
+        [Unit]
+        Description=Zettel Merken Daily Review Timer
+        After=network-online.target
 
-            [Timer]
-            Persistent=true
-            OnCalendar=Daily
-            OnBootSec=300
+        [Timer]
+        Persistent=true
+        OnCalendar=Daily
+        OnBootSec=300
 
-            [Install]
-            WantedBy=timers.target\
-            """
+        [Install]
+        WantedBy=timers.target\
+        """
     )
 
 with open(SERVICE_UNIT, "w") as service:
     service.write(
-        f"""\
-            [Unit]
-            Description=Zettel Merken Daily Review Service
+        """\
+        [Unit]
+        Description=Zettel Merken Daily Review Service
 
-            [Service]
-            Type=simple
-            ExecStart=/usr/bin/python {MAIN_DIR}
+        [Service]
+        Type=simple
+        ExecStart=/usr/bin/python -m zettel_merken
 
-            [Install]
-            WantedBy=default.target\
-            """
+        [Install]
+        WantedBy=default.target\
+        """
     )
 
 # Check if unit file was successfully created

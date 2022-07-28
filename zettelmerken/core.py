@@ -1,16 +1,20 @@
-from src.db import Db, ScheduleNotFound, ScheduleExhausted
-from src.config import Config, ConfigNotFound
-from src.helpers import get_notes_list, get_app_path, get_mail_content
-from src.mail import send_mail
+from .db import Db, ScheduleNotFound, ScheduleExhausted
+from .config import Config, ConfigNotFound
+from .helpers import get_notes_list, get_app_path, get_mail_content
+from .mail import send_mail
 
 
 def main() -> None:
+    print("Running")
     app_path = get_app_path()
 
     try:
         config = Config.load_from_file(app_path / "config.json")
-    except ConfigNotFound as err:
-        print(err)
+    except ConfigNotFound:
+        print(
+            f"config.json not found at {app_path}, "
+            "Please see README for more details!"
+        )
         exit()
 
     db = Db((app_path / "zettel_merken.db"), config)
@@ -37,3 +41,5 @@ def main() -> None:
         mail_content = get_mail_content(scheduled_notes)
         send_mail(mail_content, config)
         db.update_note_schedule(scheduled_notes)
+
+    print("Done")

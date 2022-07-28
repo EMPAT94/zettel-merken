@@ -5,14 +5,14 @@ import sqlite3
 from datetime import date, timedelta
 from pathlib import Path
 
-from src.config import Config
+from .config import Config
 
 
-class ScheduleNotFound(BaseException):
+class ScheduleNotFound(Exception):
     pass
 
 
-class ScheduleExhausted(BaseException):
+class ScheduleExhausted(Exception):
     pass
 
 
@@ -76,12 +76,12 @@ class Db:
             )
 
             if not data:
-                raise ScheduleNotFound("Note data not found.")
+                raise ScheduleNotFound
 
             schedule = json.loads(data[0])
 
             if not schedule:
-                raise ScheduleExhausted("Note schedule is empty.")
+                raise ScheduleExhausted
 
             today = date.toordinal(date.today())
             for day in schedule:

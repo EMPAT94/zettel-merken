@@ -1,7 +1,5 @@
 <img src="extras/Zettel-Merken-Github.png" alt="Zettel Merken Image">
 
-<br />
-
 <hr />
 <p align="center"><strong>Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</strong></p>
 <hr />
@@ -11,9 +9,8 @@
   <a href="https://github.com/EMPAT94/zettel-merken/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/EMPAT94/zettel-merken"></a>
   <a href="https://github.com/EMPAT94/zettel-merken/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/EMPAT94/zettel-merken"></a>
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/empat94/zettel-merken">
-<br />
 
-<br />
+<br /> <br />
 
 # Introduction
 
@@ -146,7 +143,7 @@ That is were Zettel Merken comes into play. Not only does this program keep trac
 
 ### Installation
 
-**_NOTE: This code was written in and tested on Manjaro Linux (kernel 5.18) with Python 3.10.5_**
+**_NOTE: This code was written in and tested on Manjaro Linux (kernel 5.18) with Python 3.10 (compatible with 3.9)_**
 
 For now, I have not published the code in any package repository. I am new to python and I probably butchered the standard package structure here. So (for the time being), you'll have to install using git. Fear not though, it is fairly simple.
 

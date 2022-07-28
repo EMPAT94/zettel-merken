@@ -1,5 +1,5 @@
 """This script cleans up zettel-merken data,\
-        specifically systemd units and database file."""
+    specifically systemd units and database file."""
 
 
 import os

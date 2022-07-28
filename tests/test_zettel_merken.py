@@ -1,13 +1,12 @@
 import unittest
 import sqlite3
 import json
-
 from datetime import date
 from pathlib import Path
 
-from src.db import Db, ScheduleExhausted, ScheduleNotFound
-from src.config import Config, ConfigNotFound
-import src.helpers as hlp
+from zettelmerken.db import Db, ScheduleExhausted, ScheduleNotFound
+from zettelmerken.config import Config, ConfigNotFound
+import zettelmerken.helpers as hlp
 
 
 config_file = Path("extras", "config.test.json").resolve()
@@ -34,7 +33,7 @@ class TestConfig(unittest.TestCase):
 
 class TestHelpers(unittest.TestCase):
     def test_get_app_path(self):
-        home_dir = Path("~").expanduser()
+        home_dir = Path.home()
         config_dir = home_dir / ".config"
         app_dirs = [config_dir / "zettel_merken", home_dir / "zettel_merken"]
         self.assertIn(hlp.get_app_path(), app_dirs)

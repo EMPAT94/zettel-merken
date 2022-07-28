@@ -3,7 +3,7 @@ import ssl
 
 from email.message import EmailMessage
 
-from src.config import Config
+from .config import Config
 
 
 def send_mail(mail_content: str, config: Config) -> None:

@@ -3,7 +3,7 @@ from contextlib import ExitStack
 from pathlib import Path
 from collections.abc import Iterator
 
-from src.config import Config
+from .config import Config
 
 
 def get_notes_list(config: Config) -> Iterator[Path]:
@@ -27,7 +27,7 @@ def get_notes_list(config: Config) -> Iterator[Path]:
 
 def get_app_path() -> Path:
     """Returns ~/.config/zettel_merken or ~/zettel_merken if .config not found"""
-    home = Path("~").expanduser()
+    home = Path.home()
 
     if (home / ".config").exists():
         app_path = home / ".config" / "zettel_merken"

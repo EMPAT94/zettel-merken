@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 
-class ConfigNotFound(BaseException):
+class ConfigNotFound(Exception):
     pass
 
 
@@ -35,7 +35,7 @@ class Config:
         """Parses file config.json into Config class."""
 
         if not config_file.exists():
-            raise ConfigNotFound(f"Config file not found at {config_file}")
+            raise ConfigNotFound
 
         with open(config_file) as f:
             return Config(**json.load(f))
