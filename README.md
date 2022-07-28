@@ -1,4 +1,4 @@
-<img src="extras/Zettel-Merken-Github.png" alt="Zettel Merken Image">
+<img src="https://nextcloud.priteshtupe.com/s/DT2KJDTgTmQy5Rc/preview" alt="Zettel Merken Image">
 
 <hr />
 <p align="center"><strong>Supercharge your learning by combining two of the most revolutionary ideas in knowledge enhancement!</strong></p>
@@ -139,64 +139,47 @@ It is quite difficult to manually track hundreds of notes and review a set every
 
 That is were Zettel Merken comes into play. Not only does this program keep track of your every note and its schedule, it also automatically emails notes that are due for review for the day! How awesome is that? It is quite easy to use too!
 
-## Usage
+## Setup (currently on test pypi, will upload to prod soon)
 
-### Installation
+**_NOTE: Code was written in and tested on Manjaro Linux (kernel 5.18) with Python 3.10 (compatible with 3.9)_**
 
-**_NOTE: This code was written in and tested on Manjaro Linux (kernel 5.18) with Python 3.10 (compatible with 3.9)_**
-
-For now, I have not published the code in any package repository. I am new to python and I probably butchered the standard package structure here. So (for the time being), you'll have to install using git. Fear not though, it is fairly simple.
-
-1. First, pull a clone of this repository in a convenient directory:
+1. Install
 
    ```shell
-   git clone --depth=1 https://github.com/EMPAT94/zettel-merken.git
+   python3.10 -m pip install zettelmerken
    ```
 
-2. Next, cd inside and test that it is working properly on your machine:
+2. Configure
 
    ```shell
-   python -m unittest -q test_zettel_merken.py
+   python3.10 -m zettelmerken --config
    ```
 
-3. All tests pass successfully? Awesome. Copy example config into zettel-merken's working directory:
+   Create a `config.json` in either `~/.config/zettel_merken/` or `~/zettel_merken`, and open in default editor.
+
+3. Initialize
 
    ```shell
-   cp extras/config.example.json ~/.config/zettel_merken/config.json
+   python3.10 -m zettelmerken --init
    ```
 
-Note that,
+   Create systemd units to exectute zettelmerken on a daily basis.
 
-- The directory `zettel_merken` was probably already created if you ran the tests
-- If you don't use `~/.config`, then it is in your home directory
+- Help
 
-At this point, the installation is complete. But wait, we are not done yet!
-
-### Configuration
-
-The program has no clue about how you arrange notes (or where). Nor does it have any idea who to send the email to (and from whom!). These settings go into `config.json` that we copied in the earlier step.
-
-The config is fairly self-explanatory. And there is also a wiki page for more details on the various knobs. Have a looksie.
-
-Once the config is setup, we move on to the meat of the matter...
-
-Which is a single command:
-
-```shell
-python extras/add_systemd_units.py
-```
-
-As the name suggests, this sets up the daily review job for us.
-
-Oh, do take a look inside. It is a petite little script that add systemd timer/service units and activates them!
-
-Enjoy!
+  ```shell
+  python3.10 -m zettelmerken --help
+  ```
 
 ## TODOs
 
+- [ ] Publish to PyPI
 - [ ] Add slack webhook alternative to email
 - [ ] Add a wiki
-- [ ] Publish to PyPI?
+
+## Maybes
+
+- [ ] config.toml instead of config.json?
 - [ ] Windows/Mac Support?
 - [ ] Per-note schedule?
 - [ ] Docker Image?

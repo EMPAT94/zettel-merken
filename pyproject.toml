@@ -13,11 +13,15 @@ authors = [
   { name = "Pritesh Tupe", email = "mail@priteshtupe.com" },
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
+  "Development Status :: 3 - Alpha",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: Implementation :: CPython",
+  "Environment :: Console",
+  "Natural Language :: English",
+  "Operating System :: POSIX",
+  "Topic :: Education",
 ]
 dependencies = []
 dynamic = ["version"]

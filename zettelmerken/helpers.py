@@ -1,10 +1,22 @@
 import os
+from shutil import copyfile
 from contextlib import ExitStack
 from pathlib import Path
 from collections.abc import Iterator
-from subprocess import run
+from subprocess import run, call
+from inspect import cleandoc
 
 from .config import Config
+
+
+HOME = Path("~").expanduser()
+if (HOME / ".config").exists():
+    APP_PATH = HOME / ".config" / "zettel_merken"
+else:
+    APP_PATH = HOME / "zettel_merken"
+
+if not APP_PATH.exists():
+    os.mkdir(APP_PATH)
 
 
 def get_notes_list(config: Config) -> Iterator[Path]:
@@ -28,17 +40,7 @@ def get_notes_list(config: Config) -> Iterator[Path]:
 
 def get_app_path() -> Path:
     """Returns ~/.config/zettel_merken or ~/zettel_merken if .config not found"""
-    home = Path.home()
-
-    if (home / ".config").exists():
-        app_path = home / ".config" / "zettel_merken"
-    else:
-        app_path = home / "zettel_merken"
-
-    if not app_path.exists():
-        os.mkdir(app_path)
-
-    return app_path
+    return APP_PATH
 
 
 def get_mail_content(notes: list[Path]) -> str:
@@ -93,19 +95,45 @@ def add_systemd_units():
 
     run("systemctl --user daemon-reload", shell=True)
     run("systemctl --user enable --now zettel_merken.timer", shell=True)
-    run("systemctl --user status zettel_merken.timer", shell=True)
 
 
-def remove_systemd_units():
-    HOME = Path("~").expanduser()
-    APP_PATH = HOME / ".config" / "zettel_merken"
+def copy_config_file():
+    if not (APP_PATH / "config.json").exists():
+        copyfile(
+            src=Path("./extras/config.test.json").resolve(),
+            dst=APP_PATH / "config.json",
+            follow_symlinks=True,
+        )
 
-    if not APP_PATH.exists():
-        APP_PATH = HOME / "zettel_merken"
 
+def open_config():
+    default_editor = "/usr/bin/vi"  # backup, if not defined in environment vars
+    path = get_app_path() / "config.json"
+    editor = os.environ.get("EDITOR", default_editor)
+    call([editor, path])
+
+
+def show_help():
+    help_str = cleandoc(
+        """
+        USAGE: python -m zettelmerken [OPTION]
+
+        OPTOINS:
+            --help    Show this help
+            --config  Create and open config.json
+            --init    Init systemd units
+            --remove  Remove database and systemd units
+        """
+    )
+    print(help_str)
+
+
+def remove_database():
     if APP_PATH.exists():
         (APP_PATH / "zettel_merken.db").unlink(missing_ok=True)
 
+
+def remove_systemd_units():
     if os.name != "posix":
         print("This script for only systemd users!")
         exit()
