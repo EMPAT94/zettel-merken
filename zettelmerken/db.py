@@ -102,7 +102,7 @@ class Db:
                 "SELECT id, schedule, sent FROM note_schedule WHERE note IN"
                 f" ({', '.join('?' * len(notes_list))})",
                 notes_list,
-            )
+            ).fetchall()
 
             today = date.toordinal(date.today())
 
