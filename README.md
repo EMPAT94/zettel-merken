@@ -139,7 +139,7 @@ It is quite difficult to manually track hundreds of notes and review a set every
 
 That is were Zettel Merken comes into play. Not only does this program keep track of your every note and its schedule, it also automatically emails notes that are due for review for the day! How awesome is that? It is quite easy to use too!
 
-## Setup (currently on test pypi, will upload to prod soon)
+## Setup
 
 **_NOTE: Code was written in and tested on Manjaro Linux (kernel 5.18) with Python 3.10 (compatible with 3.9)_**
 

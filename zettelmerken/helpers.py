@@ -33,7 +33,7 @@ def get_notes_list(config: Config) -> Iterator[Path]:
             for file in files:
                 if (
                     Path(path, file).suffix in config.INCLUDE_EXT
-                    and file not in config.IGNORE_FILES
+                    and file.casefold() not in config.IGNORE_FILES
                 ):
                     yield Path(path + os.sep + file).resolve()
 
