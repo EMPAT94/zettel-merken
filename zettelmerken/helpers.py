@@ -1,4 +1,5 @@
 import os
+import json
 from shutil import copyfile
 from contextlib import ExitStack
 from pathlib import Path
@@ -97,18 +98,33 @@ def add_systemd_units():
     run("systemctl --user enable --now zettel_merken.timer", shell=True)
 
 
-def copy_config_file():
+def create_config():
     if not (APP_PATH / "config.json").exists():
-        copyfile(
-            src=Path("./extras/config.test.json").resolve(),
-            dst=APP_PATH / "config.json",
-            follow_symlinks=True,
-        )
+        with open(APP_PATH / "config.json", "wt") as config:
+            dump = json.dumps(
+                {
+                    "NOTE_DIRS": ["/path/to/notes_folder"],
+                    "EMAIL": {
+                        "USER": "sender@gmail.com",
+                        "PASS": "sampleapppassword",
+                        "HOST": "smtp.gmail.com",
+                        "PORT": 465,
+                    },
+                    "RECEIVERS": ["receiver@gmail.com"],
+                    "MAX_NOTES_PER_MAIL": 10,
+                    "IGNORE_FILES": ["ignore-file.md"],
+                    "IGNORE_DIRS": ["ignore-folder"],
+                    "INCLUDE_EXT": [".md", ".txt", ".org", ".norg"],
+                    "SCHEDULE_DAYS": [1, 3, 7, 14, 30, 60, 120],
+                },
+            )
+
+            config.write(dump)
 
 
 def open_config():
     default_editor = "/usr/bin/vi"  # backup, if not defined in environment vars
-    path = get_app_path() / "config.json"
+    path = APP_PATH / "config.json"
     editor = os.environ.get("EDITOR", default_editor)
     call([editor, path])
 

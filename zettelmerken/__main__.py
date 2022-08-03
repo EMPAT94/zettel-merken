@@ -3,7 +3,7 @@ import sys
 from zettelmerken.core import main
 from zettelmerken.helpers import (
     add_systemd_units,
-    copy_config_file,
+    create_config,
     open_config,
     remove_systemd_units,
     remove_database,
@@ -17,7 +17,7 @@ if "--remove" in sys.argv:
 elif "--init" in sys.argv:
     add_systemd_units()
 elif "--config" in sys.argv:
-    copy_config_file()
+    create_config()
     open_config()
 elif "--help" in sys.argv:
     show_help()
