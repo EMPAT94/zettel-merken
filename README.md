@@ -146,13 +146,13 @@ That is were Zettel Merken comes into play. Not only does this program keep trac
 1. Install
 
    ```shell
-   python3.10 -m pip install zettelmerken
+   python -m pip install zettelmerken
    ```
 
 2. Configure
 
    ```shell
-   python3.10 -m zettelmerken --config
+   python -m zettelmerken --config
    ```
 
    Create a `config.json` in either `~/.config/zettel_merken/` or `~/zettel_merken`, and open in default editor.
@@ -160,7 +160,7 @@ That is were Zettel Merken comes into play. Not only does this program keep trac
 3. Initialize
 
    ```shell
-   python3.10 -m zettelmerken --init
+   python -m zettelmerken --init
    ```
 
    Create systemd units to exectute zettelmerken on a daily basis.
@@ -168,18 +168,23 @@ That is were Zettel Merken comes into play. Not only does this program keep trac
 - Help
 
   ```shell
-  python3.10 -m zettelmerken --help
+  python -m zettelmerken --help
   ```
 
 ## TODOs
 
-- [ ] Publish to PyPI
+### v0.2
+
 - [ ] Add slack webhook alternative to email
 - [ ] Add a wiki
+
+### v0.3
+
+- [ ] MacOS Support
 
 ## Maybes
 
 - [ ] config.toml instead of config.json?
-- [ ] Windows/Mac Support?
+- [ ] Windows Support?
 - [ ] Per-note schedule?
 - [ ] Docker Image?
