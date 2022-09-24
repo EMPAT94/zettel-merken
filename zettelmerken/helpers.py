@@ -1,11 +1,11 @@
 import os
 import json
-from shutil import copyfile
 from contextlib import ExitStack
 from pathlib import Path
 from collections.abc import Iterator
 from subprocess import run, call
 from inspect import cleandoc
+from sys import platform
 
 from .config import Config
 
@@ -50,11 +50,7 @@ def get_mail_content(notes: list[Path]) -> str:
         return "\n\n".join(file.read() + "\n\n" for file in files)
 
 
-def add_systemd_units():
-    if os.name != "posix":
-        print("This script for only systemd users!")
-        exit()
-
+def _add_systemd_units():
     CONF_DIR = Path("~/.config/systemd/user").expanduser().resolve()
     TIMER_UNIT = CONF_DIR / "zettel_merken.timer"
     SERVICE_UNIT = CONF_DIR / "zettel_merken.service"
@@ -96,6 +92,70 @@ def add_systemd_units():
 
     run("systemctl --user daemon-reload", shell=True)
     run("systemctl --user enable --now zettel_merken.timer", shell=True)
+
+
+def _add_launchd_units():
+    CONF_DIR = Path("~/Library/LaunchAgents").expanduser().resolve()
+    TIMER_UNIT = CONF_DIR / "com.zettelmerken.dailyreview.plist"
+
+    if not CONF_DIR.exists():
+        os.mkdir(CONF_DIR)
+
+    with open(TIMER_UNIT, "w") as timer:
+        timer.write(
+            """\
+            <?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+            <plist version="1.0">
+              <dict>
+                <key>Label</key>
+                <string>com.zettelmerken.dailyreview</string>
+                <key>ServiceDescription</key>
+                <string>Zettelmerken Daily Review</string>
+                <key>ProgramArguments</key>
+                <array>
+                  <string>/opt/homebrew/bin/python3</string>
+                  <string>-m</string>
+                  <string>zettelmerken</string>
+                </array>
+                <key>RunAtLoad</key>
+                <true />
+                <key>StartCalendarInterval</key>
+                <dict>
+                  <key>Hour</key>
+                  <integer>0</integer>
+                  <key>Minute</key>
+                  <integer>10</integer>
+                </dict>
+                <!-- For Debugging
+                <key>StandardErrorPath</key>
+                <string>/tmp/com.zettelmerken.dailyreview.err</string>
+                <key>StandardOutPath</key>
+                <string>/tmp/com.zettelmerken.dailyreview.out</string>
+                -->
+              </dict>
+            </plist>
+            """
+        )
+
+    run(f"plutil {TIMER_UNIT}", shell=True)
+    run(
+        f"launchctl load {TIMER_UNIT}",
+        shell=True,
+    )
+    run(f"launchctl enable {TIMER_UNIT}", shell=True)
+
+
+def add_timer_units():
+    if platform == "linux":
+        _add_systemd_units()
+    elif platform == "darwin":
+        _add_launchd_units()
+    else:
+        print(
+            "Unrecognized platform. Adding timer units only works on linux and macos!"
+        )
+        exit()
 
 
 def create_config():
